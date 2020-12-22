@@ -1,9 +1,10 @@
 import React from 'react'
 import Card from '../components/card'
 import FormGroup from '../components/form-group'
-import { FaSave } from 'react-icons/fa';
-import { FaSignInAlt } from 'react-icons/fa';
+import { FaSave } from 'react-icons/fa'
+import { FaSignInAlt } from 'react-icons/fa'
 import { withRouter } from 'react-router-dom'
+import axios from 'axios'
 
 class Login extends React.Component{
     
@@ -13,8 +14,15 @@ class Login extends React.Component{
     }
 
     login = () => {
-        console.log(this.state.email)
-        console.log(this.state.password)
+        axios.post('http://localhost:8080/api/users/auth',
+        {
+            email: this.state.email,
+            password: this.state.password
+        }).then(response => {
+            console.log(response)
+        }).catch(error => {
+            console.log(error.response)
+        })
     }
 
     signUp = () => {
