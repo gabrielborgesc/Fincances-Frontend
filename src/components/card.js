@@ -6,7 +6,13 @@ class Card extends React.Component{
             <div className = "card mb-3">
                 <h3 className = "card-header"> {this.props.title} </h3>
                 <div className="card-body">
-                    {this.props.children}
+                    <div className="row">
+                        <div className="col-lg-12">
+                            <div className="bs-component">
+                                {this.props.children}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
