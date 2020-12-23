@@ -24,7 +24,15 @@ class Login extends React.Component{
         inputPasswordErrorClass: null
     }
 
+    resetView = () => {
+        this.setState({errorEmailMessage: null})
+        this.setState({inputEmailErrorClass: null})
+        this.setState({errorPasswordMessage: null})
+        this.setState({inputPasswordErrorClass: null})
+    }
+
     login = () => {
+        this.resetView()
         this.userService.auth(
         {
             email: this.state.email,
@@ -38,13 +46,9 @@ class Login extends React.Component{
             if(data.toLowerCase().includes("email")){
             this.setState({errorEmailMessage: error.response.data})
             this.setState({inputEmailErrorClass: "is-invalid"})
-            this.setState({errorPasswordMessage: null})
-            this.setState({inputPasswordErrorClass: null})
             } else if(data.toLowerCase().includes("senha")){
                 this.setState({errorPasswordMessage: error.response.data})
                 this.setState({inputPasswordErrorClass: "is-invalid"})
-                this.setState({errorEmailMessage: null})
-                this.setState({inputEmailErrorClass: null})
             }
             errorPopUp(error.response.data)
         })

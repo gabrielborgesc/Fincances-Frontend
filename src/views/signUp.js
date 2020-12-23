@@ -26,14 +26,59 @@ class SingUp extends React.Component {
         inputConfirmPasswordErrorClass: null,
         errorPasswordMessage: null,
         inputPasswordErrorClass: null,
+        errorNameMessage: null,
+        inputNameErrorClass: null,
         signUpSuccessInputClass: null
     }
+    resetView = () => {
+        this.setState({errorEmailMessage: null})
+        this.setState({inputEmailErrorClass: null})
+        this.setState({errorConfirmPasswordMessage: null})
+        this.setState({inputConfirmPasswordErrorClass: null})
+        this.setState({errorPasswordMessage: null})
+        this.setState({inputPasswordErrorClass: null})
+        this.setState({errorNameMessage: null})
+        this.setState({inputNameErrorClass: null})
+        this.setState({signUpSuccessInputClass: null})
 
+    }
     checkData = () => {
-        return this.state.password === this.state.confirmPassword
+        var check = true
+
+        if(!this.state.name){
+            this.setState({errorNameMessage: "Campo nome é obrigatório"})
+            this.setState({inputNameErrorClass: "is-invalid"})
+            check=false
+        }
+        if(!this.state.email){
+            this.setState({errorEmailMessage: "Campo email é obrigatório"})
+            this.setState({inputEmailErrorClass: "is-invalid"})
+            check=false
+        } else if(!this.state.email.match(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]/)){
+            this.setState({errorEmailMessage: "Informe um email válido"})
+            this.setState({inputEmailErrorClass: "is-invalid"})
+            check=false
+        }
+        if(!this.state.password){
+            this.setState({errorPasswordMessage: "Campo senha é obrigatório"})
+            this.setState({inputPasswordErrorClass: "is-invalid"})    
+            check=false        
+        }
+        if(!this.state.confirmPassword){
+            this.setState({errorConfirmPasswordMessage: "Campo confirmação de senha é obrigatório"})
+            this.setState({inputConfirmPasswordErrorClass: "is-invalid"})    
+            check=false  
+        }
+        if(this.state.password && this.state.confirmPassword && this.state.password !== this.state.confirmPassword){
+            this.setState({errorConfirmPasswordMessage: "As senhas não conferem"})
+            this.setState({inputConfirmPasswordErrorClass: "is-invalid"})
+            check=false
+        }
+        return check
     }
 
     signUp = () => {
+        this.resetView()
         if(this.checkData()){
             this.userService.signUp({
                 name: this.state.name,
@@ -42,36 +87,10 @@ class SingUp extends React.Component {
             }).then(response => {
                 successPopUp('Usuário cadastrado com sucesso')
                 this.setState({signUpSuccessInputClass: "is-valid"})
-                this.setState({errorEmailMessage: null})
-                this.setState({inputEmailErrorClass: null})
-                this.setState({errorPasswordMessage: null})
-                this.setState({inputPasswordErrorClass: null})
             }).catch(error => {
                 var data = error.response.data
-                errorPopUp(data)
-                this.setState({signUpSuccessInputClass: null})
-                if(data.toLowerCase().includes("email")){
-                    this.setState({errorEmailMessage: error.response.data})
-                    this.setState({inputEmailErrorClass: "is-invalid"})
-                    this.setState({errorPasswordMessage: null})
-                    this.setState({inputPasswordErrorClass: null})
-                } else if(data.toLowerCase().includes("senha")){
-                    this.setState({errorPasswordMessage: error.response.data})
-                    this.setState({inputPasswordErrorClass: "is-invalid"})
-                    this.setState({errorEmailMessage: null})
-                    this.setState({inputEmailErrorClass: null})
-                }
-                
+                errorPopUp(data)                
             })
-            this.setState({inputConfirmPasswordErrorClass: null})
-            this.setState({errorConfirmPasswordMessage: null})
-        }
-        else{
-            errorPopUp("As senhas não conferem")
-            this.setState({errorConfirmPasswordMessage: "As senhas não conferem"})
-            this.setState({inputConfirmPasswordErrorClass: "is-invalid"})
-            this.setState({errorPasswordMessage: null})
-            this.setState({inputPasswordErrorClass: null})
         }
     }
 
@@ -88,13 +107,15 @@ class SingUp extends React.Component {
                         <fieldset>
                                 <FormGroup label = "Nome: " htmlFor = "InputName">
                                     <input type="text"
-                                    className={"form-control " + this.state.signUpSuccessInputClass}
+                                    className={"form-control " + this.state.signUpSuccessInputClass + " "
+                                                + this.state.inputNameErrorClass}
                                     name = "name"
                                     value = {this.state.name}
                                     onChange = {e => this.setState({name: e.target.value})}
                                     id="InputName"
                                     aria-describedby="NameHelp"
                                     placeholder="Digite seu nome" />
+                                    <div class="invalid-feedback">{this.state.errorNameMessage}</div>
                                 </FormGroup>
                                 <FormGroup label = "Email: " htmlFor = "InputEmail">
                                     <input type="email"
