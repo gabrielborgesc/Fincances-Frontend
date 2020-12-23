@@ -19,7 +19,7 @@ class Login extends React.Component{
             email: this.state.email,
             password: this.state.password
         }).then(response => {
-            console.log(response)
+            this.props.history.push("/home")
         }).catch(error => {
             console.log(error.response)
         })
