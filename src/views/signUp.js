@@ -20,8 +20,12 @@ class SingUp extends React.Component {
         email: '',
         password: '',
         confirmPassword: '',
+        errorEmailMessage: null,
+        inputEmailErrorClass: null,
         errorConfirmPasswordMessage: null,
         inputConfirmPasswordErrorClass: null,
+        errorPasswordMessage: null,
+        inputPasswordErrorClass: null,
         signUpSuccessInputClass: null
     }
 
@@ -38,8 +42,25 @@ class SingUp extends React.Component {
             }).then(response => {
                 successPopUp('Usuário cadastrado com sucesso')
                 this.setState({signUpSuccessInputClass: "is-valid"})
+                this.setState({errorEmailMessage: null})
+                this.setState({inputEmailErrorClass: null})
+                this.setState({errorPasswordMessage: null})
+                this.setState({inputPasswordErrorClass: null})
             }).catch(error => {
-                errorPopUp(error.response.data)
+                var data = error.response.data
+                errorPopUp(data)
+                this.setState({signUpSuccessInputClass: null})
+                if(data.toLowerCase().includes("email")){
+                    this.setState({errorEmailMessage: error.response.data})
+                    this.setState({inputEmailErrorClass: "is-invalid"})
+                    this.setState({errorPasswordMessage: null})
+                    this.setState({inputPasswordErrorClass: null})
+                } else if(data.toLowerCase().includes("senha")){
+                    this.setState({errorPasswordMessage: error.response.data})
+                    this.setState({inputPasswordErrorClass: "is-invalid"})
+                    this.setState({errorEmailMessage: null})
+                    this.setState({inputEmailErrorClass: null})
+                }
                 
             })
             this.setState({inputConfirmPasswordErrorClass: null})
@@ -49,6 +70,8 @@ class SingUp extends React.Component {
             errorPopUp("As senhas não conferem")
             this.setState({errorConfirmPasswordMessage: "As senhas não conferem"})
             this.setState({inputConfirmPasswordErrorClass: "is-invalid"})
+            this.setState({errorPasswordMessage: null})
+            this.setState({inputPasswordErrorClass: null})
         }
     }
 
@@ -75,22 +98,26 @@ class SingUp extends React.Component {
                                 </FormGroup>
                                 <FormGroup label = "Email: " htmlFor = "InputEmail">
                                     <input type="email"
-                                    className={"form-control " + this.state.signUpSuccessInputClass}
+                                    className={"form-control " + this.state.signUpSuccessInputClass + " "
+                                                + this.state.inputEmailErrorClass}
                                     name = "email"
                                     value = {this.state.email}
                                     onChange = {e => this.setState({email: e.target.value})}
                                     id="InputEmail"
                                     aria-describedby="emailHelp"
                                     placeholder="Digite seu Email" />
+                                    <div class="invalid-feedback">{this.state.errorEmailMessage}</div>
                                 </FormGroup>
                                 <FormGroup label = "Senha: " htmlFor = "InputPassword">
                                     <input type="password"
-                                    className={"form-control " + this.state.signUpSuccessInputClass}
+                                    className={"form-control " + this.state.signUpSuccessInputClass + " "
+                                                + this.state.inputPasswordErrorClass}
                                     name = "password"
                                     value = {this.state.password}
                                     onChange = {e => this.setState({password: e.target.value})}
                                     id="InputPassword"
                                     placeholder="Digite a senha" />
+                                    <div class="invalid-feedback">{this.state.errorPasswordMessage}</div>
                                 </FormGroup>
                                 <FormGroup label = "Confirmação de Senha: " htmlFor = "InputConfirmPassword">
                                     <input type="password"
