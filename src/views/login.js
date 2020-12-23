@@ -4,10 +4,17 @@ import FormGroup from '../components/form-group'
 import { FaSave } from 'react-icons/fa'
 import { FaSignInAlt } from 'react-icons/fa'
 import { withRouter } from 'react-router-dom'
-import axios from 'axios'
+import UserService from '../app/service/userService'
+import LocalStorageService from '../app/service/localStorageService'
+import {errorPopUp, successPopUp} from '../components/toastr'
 
 class Login extends React.Component{
     
+    constructor(){
+        super();
+        this.userService = new UserService;
+    }
+
     state = {
         email: '',
         password: '',
@@ -18,11 +25,13 @@ class Login extends React.Component{
     }
 
     login = () => {
-        axios.post('http://localhost:8080/api/users/auth',
+        this.userService.auth(
         {
             email: this.state.email,
             password: this.state.password
         }).then(response => {
+            LocalStorageService.addItem('userLoggedIn', response.data)
+            successPopUp("Login efetuado com sucesso")
             this.props.history.push("/home")
         }).catch(error => {
             var data = error.response.data
@@ -37,6 +46,7 @@ class Login extends React.Component{
                 this.setState({errorEmailMessage: null})
                 this.setState({inputEmailErrorClass: null})
             }
+            errorPopUp(error.response.data)
         })
     }
 

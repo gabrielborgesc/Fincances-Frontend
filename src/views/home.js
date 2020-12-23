@@ -1,9 +1,25 @@
 import React from 'react'
+import LocalStorageService from '../app/service/localStorageService';
+import UserService from '../app/service/userService';
 
 class Home extends React.Component {
 
+    constructor(){
+      super();
+      this.userService = new UserService;
+    }
     state = {
       balance: 0
+    }
+
+    componentDidMount(){
+      const user = LocalStorageService.getItem("userLoggedIn")
+      this.userService.getBalance(user.id)
+        .then(response => {
+          this.setState({balance: response.data})
+        }).catch(error => {
+          console.error(error.response)
+        })
     }
 
     render(){

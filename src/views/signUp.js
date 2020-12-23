@@ -4,19 +4,52 @@ import FormGroup from '../components/form-group'
 import { FaCheckSquare } from 'react-icons/fa';
 import { FaTimes } from 'react-icons/fa';
 import { withRouter } from 'react-router-dom'
+import UserService from '../app/service/userService';
+import { successPopUp, errorPopUp } from '../components/toastr';
 
 
 class SingUp extends React.Component {
+
+    constructor(){
+        super();
+        this.userService = new UserService;
+    }
 
     state = {
         name: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        errorConfirmPasswordMessage: null,
+        inputConfirmPasswordErrorClass: null,
+        signUpSuccessInputClass: null
+    }
+
+    checkData = () => {
+        return this.state.password === this.state.confirmPassword
     }
 
     signUp = () => {
-        console.log(this.state)
+        if(this.checkData()){
+            this.userService.signUp({
+                name: this.state.name,
+                email: this.state.email,
+                password: this.state.password
+            }).then(response => {
+                successPopUp('Usuário cadastrado com sucesso')
+                this.setState({signUpSuccessInputClass: "is-valid"})
+            }).catch(error => {
+                errorPopUp(error.response.data)
+                
+            })
+            this.setState({inputConfirmPasswordErrorClass: null})
+            this.setState({errorConfirmPasswordMessage: null})
+        }
+        else{
+            errorPopUp("As senhas não conferem")
+            this.setState({errorConfirmPasswordMessage: "As senhas não conferem"})
+            this.setState({inputConfirmPasswordErrorClass: "is-invalid"})
+        }
     }
 
     cancel = () => {
@@ -32,7 +65,7 @@ class SingUp extends React.Component {
                         <fieldset>
                                 <FormGroup label = "Nome: " htmlFor = "InputName">
                                     <input type="text"
-                                    className="form-control"
+                                    className={"form-control " + this.state.signUpSuccessInputClass}
                                     name = "name"
                                     value = {this.state.name}
                                     onChange = {e => this.setState({name: e.target.value})}
@@ -42,7 +75,7 @@ class SingUp extends React.Component {
                                 </FormGroup>
                                 <FormGroup label = "Email: " htmlFor = "InputEmail">
                                     <input type="email"
-                                    className="form-control"
+                                    className={"form-control " + this.state.signUpSuccessInputClass}
                                     name = "email"
                                     value = {this.state.email}
                                     onChange = {e => this.setState({email: e.target.value})}
@@ -52,7 +85,7 @@ class SingUp extends React.Component {
                                 </FormGroup>
                                 <FormGroup label = "Senha: " htmlFor = "InputPassword">
                                     <input type="password"
-                                    className="form-control"
+                                    className={"form-control " + this.state.signUpSuccessInputClass}
                                     name = "password"
                                     value = {this.state.password}
                                     onChange = {e => this.setState({password: e.target.value})}
@@ -61,11 +94,13 @@ class SingUp extends React.Component {
                                 </FormGroup>
                                 <FormGroup label = "Confirmação de Senha: " htmlFor = "InputConfirmPassword">
                                     <input type="password"
-                                    className="form-control"
+                                    className={"form-control " + this.state.inputConfirmPasswordErrorClass + " "
+                                                + this.state.signUpSuccessInputClass}
                                     value = {this.state.confirmPassword}
                                     onChange = {e => this.setState({confirmPassword: e.target.value})}
                                     id="InputConfirmPassword"
                                     placeholder="Repita a senha" />
+                                    <div class="invalid-feedback">{this.state.errorConfirmPasswordMessage}</div>
                                 </FormGroup>
                                 <button className="btn btn-success" onClick={this.signUp} ><FaCheckSquare />  Cadastrar</button>
                                 <button className="btn btn-danger" onClick={this.cancel}><FaTimes />  Cancelar</button>
