@@ -14,7 +14,7 @@ function Navbar() {
         <ul className="navbar-nav mr-auto">
         <NavItem href="#/home" label = "Home"/>
         <NavItem href="#/signUp" label = "Usuários"/>
-        <NavItem href="#" label = "Lançamentos"/>
+        <NavItem href="#/searchEntry" label = "Lançamentos"/>
         <NavItem href="#/login" label = "Login"/>
         <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
