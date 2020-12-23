@@ -10,7 +10,11 @@ class Login extends React.Component{
     
     state = {
         email: '',
-        password: ''
+        password: '',
+        errorEmailMessage: null,
+        inputEmailErrorClass: null,
+        errorPasswordMessage: null,
+        inputPasswordErrorClass: null
     }
 
     login = () => {
@@ -21,7 +25,18 @@ class Login extends React.Component{
         }).then(response => {
             this.props.history.push("/home")
         }).catch(error => {
-            console.log(error.response)
+            var data = error.response.data
+            if(data.toLowerCase().includes("email")){
+            this.setState({errorEmailMessage: error.response.data})
+            this.setState({inputEmailErrorClass: "is-invalid"})
+            this.setState({errorPasswordMessage: null})
+            this.setState({inputPasswordErrorClass: null})
+            } else if(data.toLowerCase().includes("senha")){
+                this.setState({errorPasswordMessage: error.response.data})
+                this.setState({inputPasswordErrorClass: "is-invalid"})
+                this.setState({errorEmailMessage: null})
+                this.setState({inputEmailErrorClass: null})
+            }
         })
     }
 
@@ -38,20 +53,22 @@ class Login extends React.Component{
                             <fieldset>
                                 <FormGroup label = "Email: " htmlFor = "exampleInputEmail1">
                                     <input type="email"
-                                    className="form-control"
+                                    className={"form-control " + this.state.inputEmailErrorClass}
                                     value = {this.state.email}
                                     onChange = {e => this.setState({email: e.target.value})}
                                     id="exampleInputEmail1"
                                     aria-describedby="emailHelp"
                                     placeholder="Digite o Email" />
+                                    <div class="invalid-feedback">{this.state.errorEmailMessage}</div>
                                 </FormGroup>
                                 <FormGroup label = "Senha: " htmlFor = "exampleInputPassword1">
                                     <input type="password"
-                                    className="form-control"
+                                    className={"form-control " + this.state.inputPasswordErrorClass}
                                     value = {this.state.password}
                                     onChange = {e => this.setState({password: e.target.value})}
                                     id="exampleInputPassword1"
                                     placeholder="Password" />
+                                    <div class="invalid-feedback">{this.state.errorPasswordMessage}</div>
                                 </FormGroup>
                                 <button className="btn btn-success" onClick = {this.login}><FaSignInAlt />  Entrar</button>
                                 <button className="btn btn-danger" onClick={this.signUp} ><FaSave />  Cadastrar</button>
