@@ -56,34 +56,36 @@ class SearchEntry extends React.Component{
         this.setState({errorUserMessage: null})
         this.setState({inputUserErrorClass: null})
     }
-    checkData = () => {
-        var check = true;
-        if(!this.state.year){
-            this.setState({errorUserMessage: "Campo usuário é obrigatório"})
-            this.setState({inputUserErrorClass: "is-invalid"})
-        }
-        return check
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+     }
+     async test(e) {
+        this.setState({desciption: e.target.value})
+        await this.sleep(10);
+        console.log('foi')
+        this.search()
     }
     search = () => {
-        if(this.checkData()){
-            const entryFilter = {
-                year: parseInt(this.state.year),
-                mounth: this.state.mounth,
-                type: this.state.type,
-                status: this.state.status,
-                description: this.state.desciption,
-                user: this.state.user
-            }
-            this.entryService.search(entryFilter)
-            .then(response => {
-                this.setState({entryList:response.data})
-                if(!this.state.entryList.length){
-                    infoPopUp("Nenhum lançamento encontrado com os dados informados")
-                }
-            }).catch(error => {
-                errorPopUp(error.response.data)
-            })
+        console.log('entrou no search')
+        console.log(this.state.desciption)
+        const entryFilter = {
+            year: parseInt(this.state.year),
+            mounth: this.state.mounth,
+            type: this.state.type,
+            status: this.state.status,
+            description: this.state.desciption,
+            user: this.state.user
         }
+        this.entryService.search(entryFilter)
+        .then(response => {
+            this.setState({entryList:response.data})
+            if(!this.state.entryList.length){
+                infoPopUp("Nenhum lançamento encontrado com os dados informados")
+            }
+        }).catch(error => {
+            errorPopUp(error.response.data)
+        })
+        
     }
     render() {
         const yearList = this.entryService.getYearList()
@@ -148,13 +150,14 @@ class SearchEntry extends React.Component{
                                         id="InputDecription"
                                         style={{marginTop: '0px', marginBottom: '0px', height: '80px'}}
                                         placeholder="Digite a descrição"
-                                        onChange = {e => this.setState({desciption: e.target.value})} />
+                                        onChange = {e => this.test(e)} />
                         </FormGroup>
                         </div>
                         </div>
                         <button className="btn btn-success" onClick = {this.search}><BiSearch />  Buscar</button>
                         <button className="btn btn-danger right-button" 
                                 onClick = {this.userList}><FaSave />  Cadastrar</button>
+                        <div>{this.state.desciption}</div>
                     </div>
                     <div className="bs-docs-section">
                         <EntryTable list={this.state.entryList} />

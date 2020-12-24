@@ -28,7 +28,6 @@ class EntryService extends ApiService {
             console.log('tem user')
             params = `${params}&user=${entryFilter.user}`
         }
-        console.log(params)
         return this.get(`/search${params}`)
         
     }
