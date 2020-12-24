@@ -16,7 +16,7 @@ function EntryTable(props){
     return(
         <table className="table table-hover">
             <thead>
-                <tr>
+                <tr className="table-active">
                 <th scope="col">Descrição</th>
                 <th scope="col">Valor</th>
                 <th scope="col">Tipo</th>

@@ -40,7 +40,7 @@ class Login extends React.Component{
         }).then(response => {
             LocalStorageService.addItem('userLoggedIn', response.data)
             successPopUp("Login efetuado com sucesso")
-            this.props.history.push("/home")
+            // this.props.history.push("/home")
         }).catch(error => {
             var data = error.response.data
             if(data.toLowerCase().includes("email")){
@@ -73,7 +73,7 @@ class Login extends React.Component{
                                     id="exampleInputEmail1"
                                     aria-describedby="emailHelp"
                                     placeholder="Digite o Email" />
-                                    <div class="invalid-feedback">{this.state.errorEmailMessage}</div>
+                                    <div className="invalid-feedback">{this.state.errorEmailMessage}</div>
                                 </FormGroup>
                                 <FormGroup label = "Senha: " htmlFor = "exampleInputPassword1">
                                     <input type="password"
@@ -82,7 +82,7 @@ class Login extends React.Component{
                                     onChange = {e => this.setState({password: e.target.value})}
                                     id="exampleInputPassword1"
                                     placeholder="Password" />
-                                    <div class="invalid-feedback">{this.state.errorPasswordMessage}</div>
+                                    <div className="invalid-feedback">{this.state.errorPasswordMessage}</div>
                                 </FormGroup>
                                 <button className="btn btn-success" onClick = {this.login}><FaSignInAlt />  Entrar</button>
                                 <button className="btn btn-danger" onClick={this.signUp} ><FaSave />  Cadastrar</button>
