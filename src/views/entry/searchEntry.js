@@ -7,6 +7,7 @@ import SelectMenu from '../../components/selectMenu'
 import EntryTable from './entryTable'
 import EntryService from '../../app/service/entryService'
 import UserService from '../../app/service/userService'
+import GeneralServices from '../../app/service/generalServices'
 
 import {BiSearch} from 'react-icons/bi'
 import {FaSave} from 'react-icons/fa'
@@ -17,7 +18,8 @@ class SearchEntry extends React.Component{
     constructor(){
         super();
         this.entryService = new EntryService;
-        this.userService = new UserService
+        this.userService = new UserService;
+        this.generalServices = new GeneralServices;
     }
 
     state = {
@@ -56,13 +58,9 @@ class SearchEntry extends React.Component{
         this.setState({errorUserMessage: null})
         this.setState({inputUserErrorClass: null})
     }
-    sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-     }
      async test(e) {
         this.setState({desciption: e.target.value})
-        await this.sleep(10);
-        console.log('foi')
+        await this.generalServices.sleep(0.001);
         this.search()
     }
     search = () => {
