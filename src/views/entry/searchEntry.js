@@ -86,41 +86,10 @@ class SearchEntry extends React.Component{
         }
     }
     render() {
-        const yearList = () => {
-            var date = new Date()
-            var currentYear = date.getFullYear()
-            var list = [{label: 'Selecione...', value:''}]
-            for (var i = 2000; i <= currentYear; i++) {
-                list.push({label: i, value: i})
-            }
-            return list;
-        }
-        const typeList = [
-            {label: 'Selecione...', value: ''},
-            {label: 'Receita', value: 'RECEITA'},
-            {label: 'Despesa', value: 'DESPESA'}
-        ]
-        const statusList = [
-            {label: 'Selecione...', value: ''},
-            {label: 'Pendente', value: 'PENDENTE'},
-            {label: 'Confirmado', value: 'CONFIRMADO'},
-            {label: 'Cancelado', value: 'CANCELADO'}
-        ]
-        const mounthList = [
-            {label: 'Selecione...',value: ''},
-            {label: 'Janeiro',value: 1},
-            {label: 'Fevereiro',value: 2},
-            {label: 'Março',value: 3},
-            {label: 'Abril',value: 4},
-            {label: 'Maio',value: 5},
-            {label: 'Junho',value: 6},
-            {label: 'Julho',value: 7},
-            {label: 'Agosto',value: 8},
-            {label: 'Setembro',value: 9},
-            {label: 'Outubro',value: 10},
-            {label: 'Novembro',value: 11},
-            {label: 'Dezembro',value: 12},
-        ]
+        const yearList = this.entryService.getYearList()
+        const typeList = this.entryService.getTypeList()
+        const statusList = this.entryService.getStatusList()
+        const mounthList =  this.entryService.getMounthList()
         return (
                    
             <div className="bs-docs-section">
@@ -130,7 +99,7 @@ class SearchEntry extends React.Component{
                     <div className = "col-md-5">
                         <FormGroup label = "Ano " htmlFor = "InputYear">
                             <SelectMenu className="form-control"
-                            list={yearList()} 
+                            list={yearList} 
                             value={this.state.year}
                             onChange={e => this.setState({year: e.target.value})}/>   
                         </FormGroup> 

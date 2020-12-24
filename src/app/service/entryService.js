@@ -32,7 +32,51 @@ class EntryService extends ApiService {
         return this.get(`/search${params}`)
         
     }
+
+    getYearList() {
+        var date = new Date()
+        var currentYear = date.getFullYear()
+        var list = [{label: 'Selecione...', value:''}]
+        for (var i = 2000; i <= currentYear; i++) {
+            list.push({label: i, value: i})
+        }
+        return list;
+    }
+
+    getTypeList(){
+        return [
+            {label: 'Selecione...', value: ''},
+            {label: 'Receita', value: 'RECEITA'},
+            {label: 'Despesa', value: 'DESPESA'}
+        ]
+    }
     
+    getStatusList (){ 
+        return([
+        {label: 'Selecione...', value: ''},
+        {label: 'Pendente', value: 'PENDENTE'},
+        {label: 'Confirmado', value: 'CONFIRMADO'},
+        {label: 'Cancelado', value: 'CANCELADO'}
+        ])
+    }
+
+    getMounthList () {
+        return([
+        {label: 'Selecione...',value: ''},
+        {label: 'Janeiro',value: 1},
+        {label: 'Fevereiro',value: 2},
+        {label: 'Março',value: 3},
+        {label: 'Abril',value: 4},
+        {label: 'Maio',value: 5},
+        {label: 'Junho',value: 6},
+        {label: 'Julho',value: 7},
+        {label: 'Agosto',value: 8},
+        {label: 'Setembro',value: 9},
+        {label: 'Outubro',value: 10},
+        {label: 'Novembro',value: 11},
+        {label: 'Dezembro',value: 12},
+        ])
+    }
 }
 
 export default EntryService
