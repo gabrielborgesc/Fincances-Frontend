@@ -29,6 +29,9 @@ toastr.options = {
   export function warningPopUp(message){
       popUp("Alerta", message, "warning")
   }
+  export function infoPopUp(message){
+      popUp("Info", message, "info")
+  }
 
   export function errorPopUp(message){
       popUp("Erro", message, "error")

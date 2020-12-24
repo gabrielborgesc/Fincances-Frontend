@@ -1,4 +1,5 @@
 import React from 'react'
+import currecyFormater from 'currency-formatter'
 
 function EntryTable(props){
     const rows = props.list.map(entry =>
@@ -6,9 +7,12 @@ function EntryTable(props){
             return(
                 <tr key={entry.id}>
                     <td>{entry.description}</td>
-                    <td>{entry.value}</td>
+                    <td>{currecyFormater.format(entry.value, {locale: 'pt-BR'})}</td>
+                    <td>{entry.year}</td>
+                    <td>{entry.mounth}</td>
                     <td>{entry.entryType}</td>
                     <td>{entry.entryStatus}</td>
+                    <td>{entry.user.name}</td>
                     <td></td>
                 </tr>
             )
@@ -19,9 +23,11 @@ function EntryTable(props){
                 <tr className="table-active">
                 <th scope="col">Descrição</th>
                 <th scope="col">Valor</th>
-                <th scope="col">Tipo</th>
+                <th scope="col">Ano</th>
                 <th scope="col">Mês</th>
+                <th scope="col">Tipo</th>
                 <th scope="col">Situação</th>
+                <th scope="col">Usuário</th>
                 <th scope="col">Ações</th>
                 </tr>
             </thead>

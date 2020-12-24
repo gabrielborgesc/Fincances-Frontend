@@ -16,7 +16,10 @@ class UserService extends ApiService {
     }
 
     getBalance(id){
-        return this.get("/balance/" + id)
+        return this.get('/balance/' + id)
+    }
+    getAllUsers() {
+        return this.get('/getUsers')
     }
 }
 

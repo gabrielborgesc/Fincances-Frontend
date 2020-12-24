@@ -151,7 +151,7 @@ class SingUp extends React.Component {
                                     <div class="invalid-feedback">{this.state.errorConfirmPasswordMessage}</div>
                                 </FormGroup>
                                 <button className="btn btn-success" onClick={this.signUp} ><FaCheckSquare />  Cadastrar</button>
-                                <button className="btn btn-danger" onClick={this.cancel}><FaTimes />  Cancelar</button>
+                                <button className="btn btn-danger right-button" onClick={this.cancel}><FaTimes />  Cancelar</button>
                             </fieldset>
                         </Card>
                     </div>

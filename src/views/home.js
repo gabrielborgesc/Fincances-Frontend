@@ -1,6 +1,8 @@
 import React from 'react'
 import LocalStorageService from '../app/service/localStorageService';
 import UserService from '../app/service/userService';
+import {HiUserGroup} from 'react-icons/hi'
+import {MdAttachMoney} from 'react-icons/md'
 
 class Home extends React.Component {
 
@@ -36,10 +38,10 @@ class Home extends React.Component {
                       <p className="lead">
                         <a className="btn btn-primary"
                         href="#/signUp"
-                        role="button"><i className="fa fa-users"></i>  Cadastrar Usuário</a>
-                        <a className="btn btn-danger"
+                        role="button"><HiUserGroup />  Cadastrar Usuário</a>
+                        <a className="btn btn-danger right-button"
                         href="#/home"
-                        role="button"><i className="fa fa-users"></i>  Cadastrar Lançamento</a>
+                        role="button"><MdAttachMoney />  Cadastrar Lançamento</a>
                       </p>
                       </div>
                     </div>      
