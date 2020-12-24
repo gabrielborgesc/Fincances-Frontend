@@ -59,8 +59,7 @@ class SearchEntry extends React.Component{
         this.setState({inputUserErrorClass: null})
     }
      async test(e) {
-        this.setState({desciption: e.target.value})
-        await this.generalServices.sleep(0.001);
+        await this.setState({desciption: e.target.value})
         this.search()
     }
     search = () => {
@@ -78,7 +77,7 @@ class SearchEntry extends React.Component{
         .then(response => {
             this.setState({entryList:response.data})
             if(!this.state.entryList.length){
-                infoPopUp("Nenhum lançamento encontrado com os dados informados")
+                // infoPopUp("Nenhum lançamento encontrado com os dados informados")
             }
         }).catch(error => {
             errorPopUp(error.response.data)
@@ -155,7 +154,6 @@ class SearchEntry extends React.Component{
                         <button className="btn btn-success" onClick = {this.search}><BiSearch />  Buscar</button>
                         <button className="btn btn-danger right-button" 
                                 onClick = {this.userList}><FaSave />  Cadastrar</button>
-                        <div>{this.state.desciption}</div>
                     </div>
                     <div className="bs-docs-section">
                         <EntryTable list={this.state.entryList} />
