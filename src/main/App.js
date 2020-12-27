@@ -3,8 +3,11 @@ import Routes from './routes'
 import Navbar from '../components/navbar/navbar'
 
 import 'toastr/build/toastr.min.js'
-
-import '../css/myBootswatch.css'
+import '../css/_variables.scss'
+import '../css/_bootswatch.scss'
+import '../css/bootstrap.min.css'
+import '../css/bootstrap.css'
+// import '../css/myBootswatch.css'
 import '../css/custom.css'
 import 'toastr/build/toastr.css'
 
