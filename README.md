@@ -1,4 +1,4 @@
-#Fiances-Frontend:
+# Finances
 
 Programas necessários:
 - Visual Studio Code
