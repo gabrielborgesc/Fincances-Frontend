@@ -31,6 +31,10 @@ class EntryService extends ApiService {
         return this.get(`/search${params}`)
         
     }
+    
+    deleteEntryById (id) {
+        return this.delete(`/delete/${id}`)
+    }
 
     getYearList() {
         var date = new Date()
@@ -76,6 +80,7 @@ class EntryService extends ApiService {
         {label: 'Dezembro',value: 12},
         ])
     }
+
 }
 
 export default EntryService

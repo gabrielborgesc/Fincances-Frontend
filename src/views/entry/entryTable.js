@@ -16,8 +16,9 @@ function EntryTable(props){
                     <td className="table-border" >{entry.entryStatus}</td>
                     <td className="table-border" >{entry.user.name}</td>
                     <td className="table-border" >
-                        <button className="btn btn-primary"><MdModeEdit /></button>
-                        <button className="btn btn-danger right-button"><AiTwotoneDelete /></button>
+                        <button className="btn btn-primary" onClick = {e => {props.editButton(entry.id)} }><MdModeEdit /></button>
+                        <button className="btn btn-danger right-button"
+                                           onClick = {e => {props.deleteButton((entry.id))} }><AiTwotoneDelete /></button>
                     </td>
                 </tr>
             )

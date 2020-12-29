@@ -11,7 +11,11 @@ import GeneralServices from '../../app/service/generalServices'
 
 import {BiSearch} from 'react-icons/bi'
 import {FaSave} from 'react-icons/fa'
-import { errorPopUp, infoPopUp } from '../../components/toastr'
+import {FiAlertTriangle} from 'react-icons/fi'
+import * as popUp from '../../components/toastr'
+
+import { Dialog } from 'primereact/dialog'
+import { Button } from 'primereact/button'
 
 class SearchEntry extends React.Component{
 
@@ -32,7 +36,8 @@ class SearchEntry extends React.Component{
         entryList: [],
         errorUserMessage: null,
         inputUserErrorClass: null,
-        listOfUsers: []
+        listOfUsers: [],
+        displayConfirmation: false
     }
     
     componentDidMount(){
@@ -48,7 +53,7 @@ class SearchEntry extends React.Component{
                 list.push({label: user.email, value: user.id})
             });
         }).catch(error => {
-            errorPopUp(error.response.data)
+            popUp.errorPopUp(error.response.data)
         })
         this.setState({listOfUsers: list})
     }
@@ -62,8 +67,7 @@ class SearchEntry extends React.Component{
         await this.setState({desciption: e.target.value})
         this.search()
     }
-    search = () => {
-        console.log('entrou no search')
+    search = (showInfoPopUp) => {
         console.log(this.state.desciption)
         const entryFilter = {
             year: parseInt(this.state.year),
@@ -76,14 +80,41 @@ class SearchEntry extends React.Component{
         this.entryService.search(entryFilter)
         .then(response => {
             this.setState({entryList:response.data})
-            if(!this.state.entryList.length){
-                // infoPopUp("Nenhum lançamento encontrado com os dados informados")
+            if(!this.state.entryList.length && showInfoPopUp){
+                popUp.infoPopUp("Nenhum lançamento encontrado com os dados informados")
             }
         }).catch(error => {
-            errorPopUp(error.response.data)
+            popUp.errorPopUp(error.response.data)
         })
         
     }
+
+    editEntry = (id) => {
+        console.log("edit entry ", id)
+    }
+    deleteEntry = async (id) => {
+        console.log("delete entry ", id)
+        // await this.entryService.deleteEntryById(id)
+        // .then(response => {
+        //     popUp.successPopUp("Lançamento deletado com sucesso")
+        // })
+        // .catch(error => {
+        //     popUp.errorPopUp(error.response.data)
+        // })
+        // this.search()
+        this.setState({displayConfirmation: true})
+
+    }
+    renderDeleteConfirmationFooter = () => {
+        return (
+            <div>
+                <Button label="No" icon="pi pi-times" onClick={() => this.setState({displayConfirmation: false})}
+                        className="p-button-text" />
+                <Button label="Yes" icon="pi pi-check" onClick={() => this.setState({displayConfirmation: false})} autoFocus />
+            </div>
+        );
+    }
+
     render() {
         const yearList = this.entryService.getYearList()
         const typeList = this.entryService.getTypeList()
@@ -151,14 +182,27 @@ class SearchEntry extends React.Component{
                         </FormGroup>
                         </div>
                         </div>
-                        <button className="btn btn-success" onClick = {this.search}><BiSearch />  Buscar</button>
+                        <button className="btn btn-success" onClick = {e => {this.search(true)} }><BiSearch />  Buscar</button>
                         <button className="btn btn-danger right-button" 
                                 onClick = {this.userList}><FaSave />  Cadastrar</button>
                     </div>
                     <div className="bs-docs-section">
-                        <EntryTable list={this.state.entryList} />
+                        <EntryTable list={this.state.entryList}
+                                    editButton = {this.editEntry}
+                                    deleteButton = {this.deleteEntry} />
                     </div>
                 </Card>
+                <Dialog header="Deletar lançamento"
+                        visible={this.state.displayConfirmation}
+                        modal
+                        style={{ width: '350px' }}
+                        footer={this.renderDeleteConfirmationFooter()}
+                        onHide={() => this.setState({displayConfirmation: false})}>
+                    <div className="confirmation-content row" style={{marginLeft: '10px'}}>
+                        <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem', marginRight: '10px'}} />
+                        <div style={{marginBottom: '10px'}}> Deseja confirmar deleção? </div>
+                    </div>
+                </Dialog>
             </div>
               
         )
