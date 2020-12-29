@@ -37,7 +37,8 @@ class SearchEntry extends React.Component{
         errorUserMessage: null,
         inputUserErrorClass: null,
         listOfUsers: [],
-        displayConfirmation: false
+        displayConfirmation: false,
+        idOfEntryToBeDeleted: null
     }
     
     componentDidMount(){
@@ -92,27 +93,37 @@ class SearchEntry extends React.Component{
     editEntry = (id) => {
         console.log("edit entry ", id)
     }
-    deleteEntry = async (id) => {
-        console.log("delete entry ", id)
-        // await this.entryService.deleteEntryById(id)
-        // .then(response => {
-        //     popUp.successPopUp("Lançamento deletado com sucesso")
-        // })
-        // .catch(error => {
-        //     popUp.errorPopUp(error.response.data)
-        // })
-        // this.search()
+    askForDeleteEntry = (entryId) => {
+        this.setState({idOfEntryToBeDeleted: entryId})
         this.setState({displayConfirmation: true})
-
     }
     renderDeleteConfirmationFooter = () => {
         return (
             <div>
-                <Button label="No" icon="pi pi-times" onClick={() => this.setState({displayConfirmation: false})}
+                <Button label="Cancelar" icon="pi pi-times" onClick={() => this.cancelDeleteEntry()}
                         className="p-button-text" />
-                <Button label="Yes" icon="pi pi-check" onClick={() => this.setState({displayConfirmation: false})} autoFocus />
+                <Button label="Confirmar" icon="pi pi-check"
+                        onClick={() => this.deleteEntry(this.state.idOfEntryToBeDeleted)} autoFocus />
             </div>
         );
+    }
+    deleteEntry = async (id) => {
+        console.log("delete entry ", id)
+        await this.entryService.deleteEntryById(id)
+        .then(response => {
+            popUp.successPopUp("Lançamento deletado com sucesso")
+        })
+        .catch(error => {
+            popUp.errorPopUp(error.response.data)
+        })
+        this.search()
+        this.setState({idOfEntryToBeDeleted: null})
+        this.setState({displayConfirmation: false})
+
+    }
+    cancelDeleteEntry = () => {
+        this.setState({displayConfirmation: false})
+        this.setState({idOfEntryToBeDeleted: null})
     }
 
     render() {
@@ -189,12 +200,12 @@ class SearchEntry extends React.Component{
                     <div className="bs-docs-section">
                         <EntryTable list={this.state.entryList}
                                     editButton = {this.editEntry}
-                                    deleteButton = {this.deleteEntry} />
+                                    deleteButton = {this.askForDeleteEntry} />
                     </div>
                 </Card>
                 <Dialog header="Deletar lançamento"
                         visible={this.state.displayConfirmation}
-                        modal
+                        modal = {true} //congela restante da tela
                         style={{ width: '350px' }}
                         footer={this.renderDeleteConfirmationFooter()}
                         onHide={() => this.setState({displayConfirmation: false})}>
