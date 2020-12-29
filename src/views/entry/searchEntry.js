@@ -11,7 +11,6 @@ import GeneralServices from '../../app/service/generalServices'
 
 import {BiSearch} from 'react-icons/bi'
 import {FaSave} from 'react-icons/fa'
-import {FiAlertTriangle} from 'react-icons/fi'
 import * as popUp from '../../components/toastr'
 
 import { Dialog } from 'primereact/dialog'
@@ -28,7 +27,7 @@ class SearchEntry extends React.Component{
 
     state = {
         year: '',
-        mounth: '',
+        month: '',
         type: '',
         status: '',
         desciption: '',
@@ -59,6 +58,11 @@ class SearchEntry extends React.Component{
         this.setState({listOfUsers: list})
     }
 
+    handleChange = (event) => {
+        const value = event.target.value
+        const name = event.target.name
+        this.setState({ [name]: value })
+    }
 
     resetView = () => {
         this.setState({errorUserMessage: null})
@@ -66,13 +70,18 @@ class SearchEntry extends React.Component{
     }
      async test(e) {
         await this.setState({desciption: e.target.value})
-        this.search()
+        if(!this.state.desciption) {
+            this.setState({entryList: []})
+        }
+        else { 
+            this.search()
+        }
     }
     search = (showInfoPopUp) => {
         console.log(this.state.desciption)
         const entryFilter = {
             year: parseInt(this.state.year),
-            mounth: this.state.mounth,
+            month: this.state.month,
             type: this.state.type,
             status: this.state.status,
             description: this.state.desciption,
@@ -130,7 +139,7 @@ class SearchEntry extends React.Component{
         const yearList = this.entryService.getYearList()
         const typeList = this.entryService.getTypeList()
         const statusList = this.entryService.getStatusList()
-        const mounthList =  this.entryService.getMounthList()
+        const monthList =  this.entryService.getmonthList()
         return (
                    
             <div className="bs-docs-section">
@@ -140,17 +149,19 @@ class SearchEntry extends React.Component{
                     <div className = "col-md-5">
                         <FormGroup label = "Ano " htmlFor = "InputYear">
                             <SelectMenu className="form-control"
+                            name="year"
                             list={yearList} 
                             value={this.state.year}
-                            onChange={e => this.setState({year: e.target.value})}/>   
+                            onChange={this.handleChange}/>   
                         </FormGroup> 
                         </div>
                         <div className = "col-md-5">
-                        <FormGroup label = "Mês " htmlFor = "InputMounth">
+                        <FormGroup label = "Mês " htmlFor = "Inputmonth">
                             <SelectMenu className="form-control"
-                                        list= {mounthList}
-                                        value={this.state.mounth}
-                                        onChange={e => this.setState({mounth: e.target.value})}/>
+                                        name="month"
+                                        list= {monthList}
+                                        value={this.state.month}
+                                        onChange={this.handleChange}/>
                         </FormGroup>
                         </div>
                         </div>
@@ -158,17 +169,19 @@ class SearchEntry extends React.Component{
                         <div className = "col-md-5">
                         <FormGroup label = "Tipo de Lançamento " htmlFor = "InputType">
                             <SelectMenu className="form-control"
+                                        name="type"
                                         list= {typeList} 
                                         value={this.state.type}
-                                        onChange={e => this.setState({type: e.target.value})}/>
+                                        onChange={this.handleChange}/>
                         </FormGroup>
                         </div>
                         <div className = "col-md-5">
                         <FormGroup label = "Status do Lançamento " htmlFor = "InputStatus">
                             <SelectMenu className="form-control"
+                                        name="status"
                                         list= {statusList} 
                                         value={this.state.status}
-                                        onChange={e => this.setState({status: e.target.value})}/>
+                                        onChange={this.handleChange}/>
                         </FormGroup>
                         </div>
                         </div>
@@ -176,9 +189,10 @@ class SearchEntry extends React.Component{
                         <div className = "col-md-5">
                         <FormGroup label = "Usuário " htmlFor = "InputUser">
                             <SelectMenu className="form-control"
+                                        name="user"
                                         list= {this.state.listOfUsers} 
                                         value={this.state.user}
-                                        onChange={e => this.setState({user: e.target.value})}/>
+                                        onChange={this.handleChange}/>
                         </FormGroup>
                         </div>
                         </div>
