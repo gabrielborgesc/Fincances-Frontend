@@ -40,7 +40,7 @@ class Home extends React.Component {
                         href="#/signUp"
                         role="button"><HiUserGroup />  Cadastrar Usuário</a>
                         <a className="btn btn-danger right-button"
-                        href="#/home"
+                        href="#/searchEntry"
                         role="button"><MdAttachMoney />  Cadastrar Lançamento</a>
                       </p>
                       </div>

@@ -252,6 +252,7 @@ class SearchEntry extends React.Component{
                                         list= {statusList} 
                                         value={this.state.status}
                                         onChange={this.handleChange}/>
+                        <div class="info-feedback">Campo utilizado apenas para busca</div>
                         </FormGroup>
                         </div>
                         </div>
@@ -280,6 +281,7 @@ class SearchEntry extends React.Component{
                                         list= {this.state.listOfUsers} 
                                         value={this.state.user}
                                         onChange={this.handleChange}/>
+                        <div class="info-feedback">Campo utilizado apenas para busca</div>
                         </FormGroup>
                         </div>
                         </div>

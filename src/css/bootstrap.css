@@ -2334,6 +2334,13 @@ textarea.form-control {
   color: #e74c3c;
 }
 
+.info-feedback { /*criei*/
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 80%;
+  color: #3c80e7;
+}
+
 .invalid-tooltip {
   position: absolute;
   top: 100%;
