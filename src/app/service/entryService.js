@@ -25,8 +25,10 @@ class EntryService extends ApiService {
             params = `${params}&description=${entryFilter.description}`
         }
         if(entryFilter.user){
-            console.log('tem user')
             params = `${params}&user=${entryFilter.user}`
+        }
+        if(entryFilter.value){
+            params = `${params}&value=${entryFilter.value}`
         }
         return this.get(`/search${params}`)
         
@@ -34,6 +36,10 @@ class EntryService extends ApiService {
     
     deleteEntryById (id) {
         return this.delete(`/delete/${id}`)
+    }
+
+    save(newEntry) {
+        return this.post(`/save`, newEntry)
     }
 
     getYearList() {
@@ -63,7 +69,7 @@ class EntryService extends ApiService {
         ])
     }
 
-    getMounthList () {
+    getMonthList () {
         return([
         {label: 'Selecione...',value: ''},
         {label: 'Janeiro',value: 1},

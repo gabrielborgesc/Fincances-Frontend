@@ -11,7 +11,7 @@ function EntryTable(props){
                     <td className="table-border"  >{entry.description}</td>
                     <td className="table-border" >{currecyFormater.format(entry.value, {locale: 'pt-BR'})}</td>
                     <td className="table-border" >{entry.year}</td>
-                    <td className="table-border" >{entry.mounth}</td>
+                    <td className="table-border" >{entry.month}</td>
                     <td className="table-border" >{entry.entryType}</td>
                     <td className="table-border" >{entry.entryStatus}</td>
                     <td className="table-border" >{entry.user.name}</td>
