@@ -10,7 +10,7 @@ function Routes(){
     return (
         <HashRouter>
             <Switch>
-                <Route path = "/home" component = {Home} />
+                <Route path = "/home/:name?/:email?" component = {Home} />
                 <Route path = "/login" component = {Login} />
                 <Route path = "/signUp" component = {SingUp} />
                 <Route path = "/searchEntry" component = {SearchEntry} />

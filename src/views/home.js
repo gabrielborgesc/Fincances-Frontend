@@ -11,7 +11,9 @@ class Home extends React.Component {
       this.userService = new UserService;
     }
     state = {
-      balance: 0
+      balance: 0,
+      name: '',
+      email: ''
     }
 
     componentDidMount(){
@@ -22,6 +24,9 @@ class Home extends React.Component {
         }).catch(error => {
           console.error(error.response)
         })
+        const params = this.props.match.params
+        this.setState({name: params.name})
+        this.setState({email: params.email})
     }
 
     render(){
@@ -30,7 +35,14 @@ class Home extends React.Component {
                 <div className = "col-md-10" style = { {position : 'relative', left : '100px'} }>
                     <div className="bs-docs-section">
                       <div className="jumbotron">
-                      <h1 >Bem vindo!</h1>
+                        { this.state.name && this.state.email ?
+                        (
+                          <h1 >Bem vindo, {this.state.name}, {this.state.email}!</h1>
+                        ) : 
+                        (
+                          <h1 >Bem vindo!</h1>
+                        )
+                        }
                       <p >Esse é seu sistema de finanças.</p>
                       <p >Seu saldo para o mês atual é de R$ {this.state.balance}</p>
                       <hr className="my-4" />
