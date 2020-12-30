@@ -49,7 +49,8 @@ class SearchEntry extends React.Component{
         errorValueMessage: null,
         inputValueErrorClass: null,
         errorDescriptionMessage: null,
-        inputDescriptionErrorClass: null
+        inputDescriptionErrorClass: null,
+        editId: null
     }
     
     componentDidMount(){
@@ -106,7 +107,6 @@ class SearchEntry extends React.Component{
             value: this.state.value,
             description: this.state.description
         }
-        console.log("serach", entryFilter.value)
         this.entryService.search(entryFilter)
         .then(response => {
             this.setState({entryList:response.data})
@@ -114,13 +114,15 @@ class SearchEntry extends React.Component{
                 popUp.infoPopUp("Nenhum lançamento encontrado com os dados informados")
             }
         }).catch(error => {
+            if(error.response){
             popUp.errorPopUp(error.response.data)
+            }
         })
         
     }
 
     editEntry = (id) => {
-        console.log("edit entry ", id)
+        this.setState({editId: id})
     }
     askForDeleteEntry = (entryId) => {
         this.setState({idOfEntryToBeDeleted: entryId})
@@ -156,7 +158,7 @@ class SearchEntry extends React.Component{
     }
     checkData = () => {
         var check = true
-
+        console.log('tamanho desc',this.state.description.length)
         if(!this.state.year){
             this.setState({errorYearMessage: "Campo Ano é obrigatório"})
             this.setState({inputYearErrorClass: "is-invalid"})
@@ -179,6 +181,11 @@ class SearchEntry extends React.Component{
         }
         if(!this.state.description){
             this.setState({errorDescriptionMessage: "Campo Descrição é obrigatório"})
+            this.setState({inputDescriptionErrorClass: "is-invalid"})
+            check=false
+        }
+        if(this.state.description.length>255){
+            popUp.warningPopUp("Limite de caracteres (255) para descrição excedido")
             this.setState({inputDescriptionErrorClass: "is-invalid"})
             check=false
         }
@@ -303,7 +310,8 @@ class SearchEntry extends React.Component{
                                 onClick = {this.save}><FaSave />  Cadastrar</button>
                     </div>
                     <div className="bs-docs-section">
-                        <EntryTable list={this.state.entryList}
+                        <EntryTable list = {this.state.entryList}
+                                    editId = {this.state.editId}
                                     editButton = {this.editEntry}
                                     deleteButton = {this.askForDeleteEntry} />
                     </div>

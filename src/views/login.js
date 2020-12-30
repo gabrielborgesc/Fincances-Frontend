@@ -57,8 +57,6 @@ class Login extends React.Component{
 
     handleKeypress = e => {
         //it triggers by pressing the enter key
-        console.log("entrou no key press")
-        console.log(e.key)
       if (e.key === "Enter") {
         this.login();
       }
