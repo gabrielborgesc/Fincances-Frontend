@@ -1,0 +1,268 @@
+import React from 'react'
+import { Toast } from 'primereact/toast'
+import { Button } from 'primereact/button'
+import { FileUpload } from 'primereact/fileupload'
+import { InputText } from 'primereact/inputtext'
+import { InputNumber } from 'primereact/inputnumber'
+import { Toolbar } from 'primereact/toolbar'
+import { DataTable } from 'primereact/datatable'
+import { Column } from 'primereact/column'
+import { Dialog } from 'primereact/dialog'
+
+import EntryService from '../../app/service/entryService'
+import SelectMenu from '../../components/selectMenu'
+import currecyFormater from 'currency-formatter'
+import * as popUp from '../../components/toastr'
+
+
+class CrudTable extends React.Component {
+
+    state = {
+        year: '',
+        month: '',
+        type: '',
+        status: '',
+        value: null,
+        user: {
+            email: ''
+        },
+        description: '',
+        selectedEntries: null,
+        globalFilter: null,
+        entryDialog: false,
+        submitted: false,
+        displayConfirmation: false,
+        editId: null
+    }
+    constructor(){
+        super()
+        this.toast = React.createRef()
+        this.dt = React.createRef()
+        this.entryService = new EntryService;
+
+    }
+
+    valueBodyTemplate = (rowData) => {
+        return currecyFormater.format(rowData.value, {locale: 'pt-BR'})
+    }
+
+    editProduct = (entry) => {
+        this.setState({year: entry.year})
+        this.setState({month: entry.month})
+        this.setState({type: entry.entryType})
+        this.setState({status: entry.entryStatus})
+        this.setState({value: entry.value})
+        this.setState({user: entry.user})
+        this.setState({description: entry.description})
+        this.setState({entryDialog: true})
+        this.setState({editId: entry.id})
+    }
+
+    hideDialog = () => {
+        this.setState({submitted: false})
+        this.setState({entryDialog: false})
+    }
+
+    handleChange = (event) => {
+        const value = event.target.value
+        const name = event.target.name
+        this.setState({ [name]: value })
+    }
+
+    exportCSV = () => {
+        this.dt.current.exportCSV();
+    }
+
+    delete = () => {
+        console.log("delete")
+        this.setState({displayConfirmation: true})
+    }
+
+    updateEntry = () => {
+        this.entryService.update(this.state.editId,
+            {
+                year: this.state.year,
+                month: this.state.month,
+                type: this.state.type,
+                status: this.state.status,
+                value: this.state.value,
+                user: this.state.user.id,
+                description: this.state.description
+            })
+            .then(response => {
+                popUp.successPopUp("Lançamento editado com sucesso")
+                this.props.search()
+            }).catch(error => {
+        })
+        this.setState({entryDialog: false})
+    }
+
+    render (){
+
+        const rightToolbarTemplate = () => {
+            return (
+                <React.Fragment>
+                    <Button label="Deletar" icon="pi pi-trash" className="p-button-danger"
+                            onClick={this.delete}
+                            />
+                </React.Fragment>
+            )
+        }
+
+        const leftToolbarTemplate = () => {
+            return (
+                <React.Fragment>
+                    {/* <FileUpload mode="basic" accept="*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="p-mr-2 p-d-inline-block" /> */}
+                    <Button label="Exportar" icon="pi pi-upload" className="p-button-help" onClick={this.exportCSV} />
+                </React.Fragment>
+            )
+        }
+
+        const actionBodyTemplate = (rowData) => {
+            return (
+                <React.Fragment>
+                    <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" onClick={() => this.editProduct(rowData)} />
+                    <Button icon="pi pi-trash" className="p-button-rounded p-button-warning right-button" onClick={() => this.props.deleteButton(rowData.id)} />
+                </React.Fragment>
+            );
+        }
+
+        const entryDialogFooter = (
+            <React.Fragment>
+                <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={this.updateEntry} />
+                <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={this.hideDialog} />
+            </React.Fragment>
+        )
+
+        const renderDeleteConfirmationFooter = () => {
+            return (
+                <div>
+                    <Button label="Cancelar" icon="pi pi-times" onClick={() => this.setState({displayConfirmation: false})}
+                            className="p-button-text" />
+                    <Button label="Confirmar" icon="pi pi-check"
+                            onClick={() => this.props.deleteMulipleEntries(this.state.selectedEntries)} autoFocus />
+                </div>
+            );
+        }
+
+        const yearList = this.entryService.getYearList()
+        const typeList = this.entryService.getTypeList()
+        const statusList = this.entryService.getStatusList()
+        const monthList =  this.entryService.getMonthList()
+
+        return (
+            <div className="datatable-crud-demo">
+            <Toast ref={this.toast} />
+
+            <div className="card">
+                <Toolbar className="p-mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+
+                <DataTable ref={this.dt} value={this.props.list}
+                            selection={this.state.selectedEntries}
+                            onSelectionChange={(e) => this.setState({selectedEntries: e.value})}
+                            scrollable
+                    dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+                    globalFilter={this.state.globalFilter} >
+
+                    <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
+                    <Column field="description" header="Descrição" sortable style ={ {width: '150px'} }></Column>
+                    <Column field="value" header="Valor" body={this.valueBodyTemplate} sortable style ={ {width: '150px'} }></Column>
+                    <Column field="year" header="Ano" sortable style ={ {width: '150px'} }></Column>
+                    <Column field="month" header="Mês" sortable style ={ {width: '150px'} }></Column>
+                    <Column field="entryType" header="Tipo" sortable style ={ {width: '150px'} }></Column>
+                    <Column field="entryStatus" header="Status" sortable style ={ {width: '150px'} }></Column>
+                    <Column body={actionBodyTemplate} style ={ {width: '120px'} }></Column>
+                </DataTable>
+            </div>
+
+            <Dialog visible={this.state.entryDialog} style={{ width: '450px' }}
+                    header="Editar lançamento"
+                    modal
+                    className="p-fluid"
+                    footer={entryDialogFooter}
+                    onHide={this.hideDialog}>
+                <div className="p-field">
+                    <label htmlFor="year">Ano</label>
+                    <SelectMenu className={"form-control "}
+                            name="year"
+                            list={yearList} 
+                            value={this.state.year}
+                            onChange={this.handleChange}/> 
+                </div>
+                <br/>
+                <div className="p-field">
+                    <label htmlFor="month">Mês</label>
+                    <SelectMenu className={"form-control " }
+                                        name="month"
+                                        list= {monthList}
+                                        value={this.state.month}
+                                        onChange={this.handleChange}/>
+                </div>
+                <br/>
+                <div className="p-field">
+                    <label htmlFor="type">Tipo de Lançamento</label>
+                    <SelectMenu className={"form-control " }
+                                        name="type"
+                                        list= {typeList} 
+                                        value={this.state.type}
+                                        onChange={this.handleChange}/>  
+                </div>
+                <br/>
+                <div className="p-field">
+                    <label htmlFor="status">Status do Lançamento</label>
+                    <SelectMenu className="form-control"
+                                        name="status"
+                                        list= {statusList} 
+                                        value={this.state.status}
+                                        onChange={this.handleChange}/>
+                </div>
+                <br/>
+                <div className="p-field p-col">
+                        <label htmlFor="value">Valor</label>
+                        <InputNumber id="value"
+                                     value={this.state.value}
+                                     name="value"
+                                     onValueChange={this.handleChange}
+                                     mode="currency"
+                                     currency="BRL"
+                                     locale="pt-BR"
+                                     placeholder="Digite o valor" />
+                </div>
+                    <br/>
+                <div className="p-field">
+                    <label htmlFor="user">Usuário</label>
+                    <InputText id="user" value={this.state.user.email}  disabled/>
+                </div>
+                <div className="p-field">
+                    <label htmlFor="description">Descrição</label>
+                    <textarea   className={"form-control " }
+                                id="description"
+                                name="description"
+                                value={this.state.description}
+                                style={{marginTop: '0px', marginBottom: '0px', height: '80px'}}
+                                placeholder="Digite a descrição"
+                                onChange = {this.handleChange} />
+                </div>
+
+            </Dialog>
+            <Dialog header="Deletar lançamento"
+                        visible={this.state.displayConfirmation}
+                        modal = {true} //congela restante da tela
+                        style={{ width: '350px' }}
+                        footer={renderDeleteConfirmationFooter()}
+                        onHide={() => this.setState({displayConfirmation: false})}>
+                    <div className="confirmation-content row" style={{marginLeft: '10px'}}>
+                        <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem', marginRight: '10px'}} />
+                        <div style={{marginBottom: '10px'}}> Deseja confirmar deleção? </div>
+                    </div>
+                </Dialog>
+        </div>
+        )
+    }
+
+
+}  
+
+export default CrudTable

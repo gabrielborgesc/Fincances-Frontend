@@ -16,6 +16,8 @@ import * as popUp from '../../components/toastr'
 import { Dialog } from 'primereact/dialog'
 import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext';
+import { InputNumber } from 'primereact/inputnumber'
+import CrudTable from './primereactCrudTable'
 
 class SearchEntry extends React.Component{
 
@@ -97,6 +99,15 @@ class SearchEntry extends React.Component{
         this.setState({errorDescriptionMessage: null})
         this.setState({inputDescriptionErrorClass: null})
     }
+    resetData = () => {
+        this.setState({year: ''})
+        this.setState({month: ''})
+        this.setState({type: ''})
+        this.setState({status: ''})
+        this.setState({description: ''})
+        this.setState({value: null})
+        this.setState({user: null})
+    }
     search = (showInfoPopUp) => {
         const entryFilter = {
             year: parseInt(this.state.year),
@@ -138,8 +149,15 @@ class SearchEntry extends React.Component{
             </div>
         );
     }
+    deleteMultipleEntrires = (list) => {
+        console.log(list)
+        if(list){
+            list.forEach(entry => console.log("deleting " + entry.id))
+            list.forEach(entry => this.deleteEntry(entry.id))
+        }
+    }
     deleteEntry = async (id) => {
-        console.log("delete entry ", id)
+        console.log("deleting entry ", id)
         await this.entryService.deleteEntryById(id)
         .then(response => {
             popUp.successPopUp("Lançamento deletado com sucesso")
@@ -158,7 +176,6 @@ class SearchEntry extends React.Component{
     }
     checkData = () => {
         var check = true
-        console.log('tamanho desc',this.state.description.length)
         if(!this.state.year){
             this.setState({errorYearMessage: "Campo Ano é obrigatório"})
             this.setState({inputYearErrorClass: "is-invalid"})
@@ -205,8 +222,9 @@ class SearchEntry extends React.Component{
             .catch(error => {
                 popUp.errorPopUp(error.response.data)
             })
+            this.resetData()
             this.search()
-    }
+    } 
     }
 
     render() {
@@ -266,17 +284,23 @@ class SearchEntry extends React.Component{
                         <div className = "row">
                         <div className = "col-md-5">
                         <FormGroup label = "Valor " htmlFor = "InputValue">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                            <span class="input-group-text">R$</span>
-                            </div>
-                            <input type="text"
+                        <div class="p-field p-col-1">
+                            {/* <input type="text"
                                        className={"form-control " + this.state.inputValueErrorClass}
                                         name = "value"
                                         value = {this.state.value}
                                         onChange = {this.handleChange}
                                         id="InputValue"
-                                        placeholder="Digite o valor" />
+                                        placeholder="Digite o valor" /> */}
+                            <InputNumber id="InputValue"
+                                        className={this.state.inputValueErrorClass}
+                                        style={ {width: '415px'} }
+                                        value={this.state.value}
+                                        name = "value"
+                                        onValueChange={this.handleChange}
+                                        mode="currency"
+                                        currency="BRL"
+                                        locale="pt-BR" />
                             <div class="invalid-feedback">{this.state.errorValueMessage}</div>
                         </div>
                         </FormGroup>
@@ -298,6 +322,7 @@ class SearchEntry extends React.Component{
                             <textarea   className={"form-control " + this.state.inputDescriptionErrorClass}
                                         id="InputDecription"
                                         name="description"
+                                        value={this.state.description}
                                         style={{marginTop: '0px', marginBottom: '0px', height: '80px'}}
                                         placeholder="Digite a descrição"
                                         onChange = {this.handleChange} />
@@ -310,10 +335,14 @@ class SearchEntry extends React.Component{
                                 onClick = {this.save}><FaSave />  Cadastrar</button>
                     </div>
                     <div className="bs-docs-section">
-                        <EntryTable list = {this.state.entryList}
+                        {/* <EntryTable list = {this.state.entryList}
                                     editId = {this.state.editId}
                                     editButton = {this.editEntry}
-                                    deleteButton = {this.askForDeleteEntry} />
+                                    deleteButton = {this.askForDeleteEntry} /> */}
+                        <CrudTable list = {this.state.entryList}
+                                   deleteButton = {this.askForDeleteEntry}
+                                   deleteMulipleEntries = {this.deleteMultipleEntrires}
+                                   search = {this.search} />
                     </div>
                 </Card>
                 <Dialog header="Deletar lançamento"
