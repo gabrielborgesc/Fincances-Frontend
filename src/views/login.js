@@ -94,7 +94,7 @@ class Login extends React.Component{
                                     placeholder="Password" />
                                     <div className="invalid-feedback">{this.state.errorPasswordMessage}</div>
                                 </FormGroup>
-                                <button type="submit" className="btn btn-success" onSubmit = {this.login}><FaSignInAlt />  Entrar</button>
+                                <button type="submit" className="btn btn-success" onClick = {this.login}><FaSignInAlt />  Entrar</button>
                                 <button className="btn btn-danger right-button"
                                 onClick={this.signUp} ><FaSave />  Cadastrar</button>
                             </fieldset>

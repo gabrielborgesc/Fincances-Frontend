@@ -52,7 +52,8 @@ class SearchEntry extends React.Component{
         inputValueErrorClass: null,
         errorDescriptionMessage: null,
         inputDescriptionErrorClass: null,
-        editId: null
+        editId: null,
+        loading: false
     }
     
     componentDidMount(){
@@ -118,12 +119,14 @@ class SearchEntry extends React.Component{
             value: this.state.value,
             description: this.state.description
         }
+        this.setState({loading: true})
         this.entryService.search(entryFilter)
         .then(response => {
             this.setState({entryList:response.data})
             if(!this.state.entryList.length && showInfoPopUp){
                 popUp.infoPopUp("Nenhum lançamento encontrado com os dados informados")
             }
+            this.setState({loading: false})
         }).catch(error => {
             if(error.response){
             popUp.errorPopUp(error.response.data)
@@ -193,7 +196,7 @@ class SearchEntry extends React.Component{
         }
         if(!this.state.value){
             this.setState({errorValueMessage: "Campo Valor é obrigatório"})
-            this.setState({inputValueErrorClass: "is-invalid"})
+            this.setState({inputValueErrorClass: "p-invalid p-d-block"})
             check=false
         }
         if(!this.state.description){
@@ -301,7 +304,7 @@ class SearchEntry extends React.Component{
                                         mode="currency"
                                         currency="BRL"
                                         locale="pt-BR" />
-                            <div class="invalid-feedback">{this.state.errorValueMessage}</div>
+                             <small id="username2-help" className="p-invalid p-d-block">{this.state.errorValueMessage}</small>
                         </div>
                         </FormGroup>
                         </div>
@@ -342,7 +345,8 @@ class SearchEntry extends React.Component{
                         <CrudTable list = {this.state.entryList}
                                    deleteButton = {this.askForDeleteEntry}
                                    deleteMulipleEntries = {this.deleteMultipleEntrires}
-                                   search = {this.search} />
+                                   search = {this.search}
+                                   loading = {this.state.loading} />
                     </div>
                 </Card>
                 <Dialog header="Deletar lançamento"

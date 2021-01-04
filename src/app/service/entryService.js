@@ -46,6 +46,10 @@ class EntryService extends ApiService {
         return this.put(`/update/${id}`, entry)
     }
 
+    updateStatus(id, status){
+        return this.put(`/changeStatus/${id}`, status)
+    }
+
     getYearList() {
         var date = new Date()
         var currentYear = date.getFullYear()

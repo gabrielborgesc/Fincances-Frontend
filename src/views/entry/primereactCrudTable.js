@@ -14,7 +14,6 @@ import SelectMenu from '../../components/selectMenu'
 import currecyFormater from 'currency-formatter'
 import * as popUp from '../../components/toastr'
 
-
 class CrudTable extends React.Component {
 
     state = {
@@ -32,7 +31,7 @@ class CrudTable extends React.Component {
         entryDialog: false,
         submitted: false,
         displayConfirmation: false,
-        editId: null
+        editId: null,
     }
     constructor(){
         super()
@@ -74,8 +73,11 @@ class CrudTable extends React.Component {
     }
 
     delete = () => {
-        console.log("delete")
-        this.setState({displayConfirmation: true})
+        if(this.state.selectedEntries){
+            this.setState({displayConfirmation: true})
+        } else {
+            popUp.warningPopUp("Nenhum lançamento foi selecionado para deleção")
+        }
     }
 
     updateEntry = () => {
@@ -93,9 +95,21 @@ class CrudTable extends React.Component {
                 popUp.successPopUp("Lançamento editado com sucesso")
                 this.props.search()
             }).catch(error => {
+                popUp.errorPopUp(error.response.data)
         })
         this.setState({entryDialog: false})
     }
+
+    updateStatus = (id, status) => {
+        this.entryService.updateStatus(id, { status } )
+        .then(response => {
+            popUp.successPopUp("Lançamento " + status + " com sucesso")
+            this.props.search()
+        }).catch(error => {
+            popUp.errorPopUp(error.response.data)
+        })
+    }
+
 
     render (){
 
@@ -121,8 +135,24 @@ class CrudTable extends React.Component {
         const actionBodyTemplate = (rowData) => {
             return (
                 <React.Fragment>
-                    <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" onClick={() => this.editProduct(rowData)} />
-                    <Button icon="pi pi-trash" className="p-button-rounded p-button-warning right-button" onClick={() => this.props.deleteButton(rowData.id)} />
+                    <Button title = "Efetivar"
+                            icon="pi pi-check-circle" 
+                            className="p-button-rounded p-button-success"
+                            disabled={rowData.entryStatus !== "PENDENTE"}
+                            onClick={() => this.updateStatus(rowData.id, 'confirmado')} />
+
+                    <Button title = "Cancelar" 
+                            icon="pi pi-times-circle" 
+                            className="p-button-rounded p-button-danger right-button"
+                            style={ {marginLeft: '3px'} }
+                            disabled={rowData.entryStatus !== "PENDENTE"}
+                            onClick={() => this.updateStatus(rowData.id, 'cancelado')} />
+
+                    <Button title = "Editar"
+                            icon="pi pi-pencil"
+                            className="p-button-rounded p-button-primary p-mr-2"
+                            style={ {marginLeft: '3px'} }
+                            onClick={() => this.editProduct(rowData)} />
                 </React.Fragment>
             );
         }
@@ -161,19 +191,20 @@ class CrudTable extends React.Component {
                             selection={this.state.selectedEntries}
                             onSelectionChange={(e) => this.setState({selectedEntries: e.value})}
                             scrollable
+                            loading={this.props.loading}
                     dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
                     globalFilter={this.state.globalFilter} >
 
                     <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
-                    <Column field="description" header="Descrição" sortable style ={ {width: '150px'} }></Column>
-                    <Column field="value" header="Valor" body={this.valueBodyTemplate} sortable style ={ {width: '150px'} }></Column>
-                    <Column field="year" header="Ano" sortable style ={ {width: '150px'} }></Column>
-                    <Column field="month" header="Mês" sortable style ={ {width: '150px'} }></Column>
-                    <Column field="entryType" header="Tipo" sortable style ={ {width: '150px'} }></Column>
-                    <Column field="entryStatus" header="Status" sortable style ={ {width: '150px'} }></Column>
-                    <Column body={actionBodyTemplate} style ={ {width: '120px'} }></Column>
+                    <Column field="description" header="Descrição" sortable style ={ {width: '140px'} }></Column>
+                    <Column field="value" header="Valor" body={this.valueBodyTemplate} sortable style ={ {width: '140px'} }></Column>
+                    <Column field="year" header="Ano" sortable style ={ {width: '140px'} }></Column>
+                    <Column field="month" header="Mês" sortable style ={ {width: '140px'} }></Column>
+                    <Column field="entryType" header="Tipo" sortable style ={ {width: '140px'} }></Column>
+                    <Column field="entryStatus" header="Status" sortable style ={ {width: '140px'} }></Column>
+                    <Column body={actionBodyTemplate} style ={ {width: '150px'} }></Column>
                 </DataTable>
             </div>
 
