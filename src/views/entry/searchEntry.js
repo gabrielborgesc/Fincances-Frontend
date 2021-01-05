@@ -212,7 +212,7 @@ class SearchEntry extends React.Component{
         this.resetView()
         if(this.checkData()){
             const {year, month, type, value, description} = this.state
-            const loggedUser = LocalStorageService.getItem('userLoggedIn')
+            const loggedUser = this.context.userLoggedIn
             const newEntry = {year, month, type, value, description, user: loggedUser.id}
             await this.entryService.save(newEntry)
             .then(response => {
