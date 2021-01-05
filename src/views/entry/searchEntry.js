@@ -18,6 +18,7 @@ import { Button } from 'primereact/button'
 // import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber'
 import CrudTable from './primereactCrudTable'
+import { AuthContext } from '../../main/authProvider'
 
 class SearchEntry extends React.Component{
 
@@ -213,6 +214,7 @@ class SearchEntry extends React.Component{
         if(this.checkData()){
             const {year, month, type, value, description} = this.state
             const loggedUser = this.context.userLoggedIn
+            console.log(loggedUser)
             const newEntry = {year, month, type, value, description, user: loggedUser.id}
             await this.entryService.save(newEntry)
             .then(response => {
@@ -363,5 +365,5 @@ class SearchEntry extends React.Component{
     }
 
 }
-
+SearchEntry.contextType = AuthContext
 export default withRouter(SearchEntry)

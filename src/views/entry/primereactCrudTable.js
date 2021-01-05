@@ -45,6 +45,10 @@ class CrudTable extends React.Component {
         return currecyFormater.format(rowData.value, {locale: 'pt-BR'})
     }
 
+    username = (rowData) => {
+        return rowData.user.name
+    }
+
     editProduct = (entry) => {
         this.setState({year: entry.year})
         this.setState({month: entry.month})
@@ -204,7 +208,8 @@ class CrudTable extends React.Component {
                     <Column field="month" header="Mês" sortable style ={ {width: '140px'} }></Column>
                     <Column field="entryType" header="Tipo" sortable style ={ {width: '140px'} }></Column>
                     <Column field="entryStatus" header="Status" sortable style ={ {width: '140px'} }></Column>
-                    <Column body={actionBodyTemplate} style ={ {width: '150px'} }></Column>
+                    <Column field="user" header="Usuário" body={this.username} sortable style ={ {width: '140px'} }></Column>
+                    <Column body={actionBodyTemplate} style ={ {width: '160px'} }></Column>
                 </DataTable>
             </div>
 
