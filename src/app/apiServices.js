@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const httpClient = axios.create({
-    baseURL: 'http://192.168.1.50:8080'
+    // baseURL: 'http://192.168.1.50:8080'
+    baseURL: 'https://spring-finances-api.herokuapp.com'
 })
 
 class ApiService {
