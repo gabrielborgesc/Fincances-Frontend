@@ -14,17 +14,18 @@ import 'toastr/build/toastr.css'
 import 'primereact/resources/themes/saga-blue/theme.css'
 import 'primereact/resources/primereact.min.css'
 import 'primeicons/primeicons.css'
+import AuthenticationProvider from './authProvider'
 
 class App extends React.Component {
 
   render(){
     return(
-      <>
+      <AuthenticationProvider>
       <Navbar />
       <div className = "container">
         <Routes />
       </div>
-      </>
+      </AuthenticationProvider>
     );
   }
 }

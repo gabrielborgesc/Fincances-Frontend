@@ -17,7 +17,6 @@ class EntryTable extends React.Component{
         updated: false
     }
     componentDidUpdate(){
-        console.log("entrou")
         if(this.props.list && this.props.editId && !this.state.updated){
             const entry = this.props.list.find(entry => entry.id === this.props.editId)
             this.updateState(entry)
@@ -41,8 +40,6 @@ class EntryTable extends React.Component{
     }
 
     render () {
-        console.log("type", this.state.type)
-        console.log('list', this.props.list)
         var rows = this.props.list.map(entry =>
             {   
                 if(this.props.editId === entry.id){

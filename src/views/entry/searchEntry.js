@@ -4,7 +4,7 @@ import FormGroup from '../../components/form-group'
 import { withRouter } from 'react-router-dom'
 import LocalStorageService from '../../app/service/localStorageService'
 import SelectMenu from '../../components/selectMenu'
-import EntryTable from './entryTable'
+// import EntryTable from './entryTable'
 import EntryService from '../../app/service/entryService'
 import UserService from '../../app/service/userService'
 import GeneralServices from '../../app/service/generalServices'
@@ -15,7 +15,7 @@ import * as popUp from '../../components/toastr'
 
 import { Dialog } from 'primereact/dialog'
 import { Button } from 'primereact/button'
-import { InputText } from 'primereact/inputtext';
+// import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber'
 import CrudTable from './primereactCrudTable'
 
@@ -23,9 +23,9 @@ class SearchEntry extends React.Component{
 
     constructor(){
         super();
-        this.entryService = new EntryService;
-        this.userService = new UserService;
-        this.generalServices = new GeneralServices;
+        this.entryService = new EntryService();
+        this.userService = new UserService();
+        this.generalServices = new GeneralServices();
     }
 
     state = {
@@ -153,14 +153,11 @@ class SearchEntry extends React.Component{
         );
     }
     deleteMultipleEntrires = (list) => {
-        console.log(list)
         if(list){
-            list.forEach(entry => console.log("deleting " + entry.id))
             list.forEach(entry => this.deleteEntry(entry.id))
         }
     }
     deleteEntry = async (id) => {
-        console.log("deleting entry ", id)
         await this.entryService.deleteEntryById(id)
         .then(response => {
             popUp.successPopUp("Lançamento deletado com sucesso")
@@ -248,7 +245,7 @@ class SearchEntry extends React.Component{
                             list={yearList} 
                             value={this.state.year}
                             onChange={this.handleChange}/> 
-                            <div class="invalid-feedback">{this.state.errorYearMessage}</div>  
+                            <div className="invalid-feedback">{this.state.errorYearMessage}</div>  
                         </FormGroup> 
                         </div>
                         <div className = "col-md-5">
@@ -258,7 +255,7 @@ class SearchEntry extends React.Component{
                                         list= {monthList}
                                         value={this.state.month}
                                         onChange={this.handleChange}/>
-                            <div class="invalid-feedback">{this.state.errorMonthMessage}</div>
+                            <div className="invalid-feedback">{this.state.errorMonthMessage}</div>
                         </FormGroup>
                         </div>
                         </div>
@@ -270,7 +267,7 @@ class SearchEntry extends React.Component{
                                         list= {typeList} 
                                         value={this.state.type}
                                         onChange={this.handleChange}/>
-                            <div class="invalid-feedback">{this.state.errorTypeMessage}</div>
+                            <div className="invalid-feedback">{this.state.errorTypeMessage}</div>
                         </FormGroup>
                         </div>
                         <div className = "col-md-5">
@@ -280,14 +277,14 @@ class SearchEntry extends React.Component{
                                         list= {statusList} 
                                         value={this.state.status}
                                         onChange={this.handleChange}/>
-                        <div class="info-feedback">Campo utilizado apenas para busca</div>
+                        <div className="info-feedback">Campo utilizado apenas para busca</div>
                         </FormGroup>
                         </div>
                         </div>
                         <div className = "row">
                         <div className = "col-md-5">
                         <FormGroup label = "Valor " htmlFor = "InputValue">
-                        <div class="p-field p-col-1">
+                        <div className="p-field p-col-1">
                             {/* <input type="text"
                                        className={"form-control " + this.state.inputValueErrorClass}
                                         name = "value"
@@ -315,7 +312,7 @@ class SearchEntry extends React.Component{
                                         list= {this.state.listOfUsers} 
                                         value={this.state.user}
                                         onChange={this.handleChange}/>
-                        <div class="info-feedback">Campo utilizado apenas para busca</div>
+                        <div className="info-feedback">Campo utilizado apenas para busca</div>
                         </FormGroup>
                         </div>
                         </div>
@@ -329,7 +326,7 @@ class SearchEntry extends React.Component{
                                         style={{marginTop: '0px', marginBottom: '0px', height: '80px'}}
                                         placeholder="Digite a descrição"
                                         onChange = {this.handleChange} />
-                        <div class="invalid-feedback">{this.state.errorDescriptionMessage}</div>
+                        <div className="invalid-feedback">{this.state.errorDescriptionMessage}</div>
                         </FormGroup>
                         </div>
                         </div>

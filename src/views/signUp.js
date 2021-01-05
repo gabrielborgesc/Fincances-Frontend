@@ -12,7 +12,7 @@ class SingUp extends React.Component {
 
     constructor(){
         super();
-        this.userService = new UserService;
+        this.userService = new UserService();
     }
 
     state = {
@@ -87,6 +87,7 @@ class SingUp extends React.Component {
             }).then(response => {
                 successPopUp('Usuário cadastrado com sucesso')
                 this.setState({signUpSuccessInputClass: "is-valid"})
+                this.props.history.push('/login')
             }).catch(error => {
                 var data = error.response.data
                 errorPopUp(data)                
@@ -96,6 +97,13 @@ class SingUp extends React.Component {
 
     cancel = () => {
         this.props.history.push('/login')
+    }
+
+    handleKeypress = e => {
+        //it triggers by pressing the enter key
+      if (e.key === "Enter") {
+        this.signUp();
+      }
     }
 
     render(){
@@ -112,10 +120,11 @@ class SingUp extends React.Component {
                                     name = "name"
                                     value = {this.state.name}
                                     onChange = {e => this.setState({name: e.target.value})}
+                                    onKeyPress={this.handleKeypress}
                                     id="InputName"
                                     aria-describedby="NameHelp"
                                     placeholder="Digite seu nome" />
-                                    <div class="invalid-feedback">{this.state.errorNameMessage}</div>
+                                    <div className="invalid-feedback">{this.state.errorNameMessage}</div>
                                 </FormGroup>
                                 <FormGroup label = "Email: " htmlFor = "InputEmail">
                                     <input type="email"
@@ -124,10 +133,11 @@ class SingUp extends React.Component {
                                     name = "email"
                                     value = {this.state.email}
                                     onChange = {e => this.setState({email: e.target.value})}
+                                    onKeyPress={this.handleKeypress}
                                     id="InputEmail"
                                     aria-describedby="emailHelp"
                                     placeholder="Digite seu Email" />
-                                    <div class="invalid-feedback">{this.state.errorEmailMessage}</div>
+                                    <div className="invalid-feedback">{this.state.errorEmailMessage}</div>
                                 </FormGroup>
                                 <FormGroup label = "Senha: " htmlFor = "InputPassword">
                                     <input type="password"
@@ -136,9 +146,10 @@ class SingUp extends React.Component {
                                     name = "password"
                                     value = {this.state.password}
                                     onChange = {e => this.setState({password: e.target.value})}
+                                    onKeyPress={this.handleKeypress}
                                     id="InputPassword"
                                     placeholder="Digite a senha" />
-                                    <div class="invalid-feedback">{this.state.errorPasswordMessage}</div>
+                                    <div className="invalid-feedback">{this.state.errorPasswordMessage}</div>
                                 </FormGroup>
                                 <FormGroup label = "Confirmação de Senha: " htmlFor = "InputConfirmPassword">
                                     <input type="password"
@@ -146,9 +157,10 @@ class SingUp extends React.Component {
                                                 + this.state.signUpSuccessInputClass}
                                     value = {this.state.confirmPassword}
                                     onChange = {e => this.setState({confirmPassword: e.target.value})}
+                                    onKeyPress={this.handleKeypress}
                                     id="InputConfirmPassword"
                                     placeholder="Repita a senha" />
-                                    <div class="invalid-feedback">{this.state.errorConfirmPasswordMessage}</div>
+                                    <div className="invalid-feedback">{this.state.errorConfirmPasswordMessage}</div>
                                 </FormGroup>
                                 <button className="btn btn-success" onClick={this.signUp} ><FaCheckSquare />  Cadastrar</button>
                                 <button className="btn btn-danger right-button" onClick={this.cancel}><FaTimes />  Cancelar</button>

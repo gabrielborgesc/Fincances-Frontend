@@ -37,7 +37,7 @@ class CrudTable extends React.Component {
         super()
         this.toast = React.createRef()
         this.dt = React.createRef()
-        this.entryService = new EntryService;
+        this.entryService = new EntryService();
 
     }
 

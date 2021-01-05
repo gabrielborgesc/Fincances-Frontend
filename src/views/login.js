@@ -5,14 +5,14 @@ import { FaSave } from 'react-icons/fa'
 import { FaSignInAlt } from 'react-icons/fa'
 import { withRouter } from 'react-router-dom'
 import UserService from '../app/service/userService'
-import LocalStorageService from '../app/service/localStorageService'
 import {errorPopUp, successPopUp} from '../components/toastr'
+import { AuthContext } from '../main/authProvider'
 
 class Login extends React.Component{
     
     constructor(){
         super();
-        this.userService = new UserService;
+        this.userService = new UserService();
     }
 
     state = {
@@ -39,7 +39,7 @@ class Login extends React.Component{
             password: this.state.password
         }).then(response => {
             const user = response.data
-            LocalStorageService.addItem('userLoggedIn', user)
+            this.context.beginSession(user)
             successPopUp("Login efetuado com sucesso")
             this.props.history.push(`/home/${user.name}/${user.email}`)
         }).catch(error => {
@@ -60,7 +60,7 @@ class Login extends React.Component{
       if (e.key === "Enter") {
         this.login();
       }
-    };
+    }
 
     signUp = () => {
         this.props.history.push('/signUp')
@@ -109,5 +109,7 @@ class Login extends React.Component{
     }
     
 }
+
+Login.contextType = AuthContext
 
 export default withRouter(Login)

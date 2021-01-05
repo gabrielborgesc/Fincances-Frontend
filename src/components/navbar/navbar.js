@@ -1,22 +1,22 @@
 import React from 'react';
+import { AuthConsumer } from '../../main/authProvider';
 import NavItem from './navItem'
-
-function Navbar() {
+function Navbar(props) {
     
     return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a className="navbar-brand" href="#">Finances</a>
+    <a className="navbar-brand" href="#/home">Finances</a>
     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
     </button>
 
     <div className="collapse navbar-collapse" id="navbarColor01">
         <ul className="navbar-nav mr-auto">
-        <NavItem href="#/home" label = "Home"/>
-        <NavItem href="#/signUp" label = "Usuários"/>
-        <NavItem href="#/searchEntry" label = "Lançamentos"/>
-        <NavItem href="#/login" label = "Login"/>
-        <li className="nav-item dropdown">
+        <NavItem render = {props.isAuth} href="#/home" label = "Home"/>
+        <NavItem render = {props.isAuth} href="#/signUp" label = "Usuários"/>
+        <NavItem render = {props.isAuth} href="#/searchEntry" label = "Lançamentos"/>
+        <NavItem render = {props.isAuth} onClick = {props.endSession} href="#/login" label = "Sair"/>
+        {/* <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
             role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
             <div className="dropdown-menu">
@@ -26,7 +26,7 @@ function Navbar() {
             <div className="dropdown-divider"></div>
             <a className="dropdown-item" href="#">Separated link</a>
             </div>
-        </li>              
+        </li>               */}
         </ul>
         <form className="form-inline my-2 my-lg-0">
         <input className="form-control mr-sm-2" type="text" placeholder="Search" />
@@ -37,4 +37,11 @@ function Navbar() {
     )
 }
 
-export default Navbar
+export default () => (
+    <AuthConsumer>
+        { (context) => (
+            <Navbar isAuth={context.isAuth} endSession={context.endSession} />
+        )
+        }
+    </AuthConsumer>
+)

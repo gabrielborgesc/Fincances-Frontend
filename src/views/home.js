@@ -1,14 +1,14 @@
 import React from 'react'
-import LocalStorageService from '../app/service/localStorageService';
 import UserService from '../app/service/userService';
 import {HiUserGroup} from 'react-icons/hi'
 import {MdAttachMoney} from 'react-icons/md'
+import { AuthContext } from '../main/authProvider';
 
 class Home extends React.Component {
 
     constructor(){
       super();
-      this.userService = new UserService;
+      this.userService = new UserService();
     }
     state = {
       balance: 0,
@@ -17,7 +17,7 @@ class Home extends React.Component {
     }
 
     componentDidMount(){
-      const user = LocalStorageService.getItem("userLoggedIn")
+      const user = this.context.userLoggedIn
       this.userService.getBalance(user.id)
         .then(response => {
           this.setState({balance: response.data})
@@ -37,7 +37,8 @@ class Home extends React.Component {
                       <div className="jumbotron">
                         { this.state.name && this.state.email ?
                         (
-                          <h1 >Bem vindo, {this.state.name}, {this.state.email}!</h1>
+                          // <h1 >Bem vindo, {this.state.name}, {this.state.email}!</h1>
+                          <h1 >Bem vindo, {this.context.userLoggedIn.name}, {this.context.userLoggedIn.email}!</h1>
                         ) : 
                         (
                           <h1 >Bem vindo!</h1>
@@ -62,5 +63,7 @@ class Home extends React.Component {
         )
     }
 }
+
+Home.contextType = AuthContext
 
 export default Home
