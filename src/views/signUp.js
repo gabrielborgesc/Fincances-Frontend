@@ -83,7 +83,7 @@ class SingUp extends React.Component {
             this.userService.signUp({
                 name: this.state.name,
                 email: this.state.email,
-                password: this.state.password
+                passwd: this.state.password
             }).then(response => {
                 successPopUp('Usuário cadastrado com sucesso')
                 this.setState({signUpSuccessInputClass: "is-valid"})

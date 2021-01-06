@@ -7,12 +7,14 @@ import { withRouter } from 'react-router-dom'
 import UserService from '../app/service/userService'
 import {errorPopUp, successPopUp} from '../components/toastr'
 import { AuthContext } from '../main/authProvider'
+import HandleErrorService from '../app/service/handleErrorService'
 
 class Login extends React.Component{
     
     constructor(){
         super();
         this.userService = new UserService();
+        this.handleErrorService = new HandleErrorService();
     }
 
     state = {
@@ -36,13 +38,14 @@ class Login extends React.Component{
         this.userService.auth(
         {
             email: this.state.email,
-            password: this.state.password
+            passwd: this.state.password
         }).then(response => {
             const user = response.data
             this.context.beginSession(user)
             successPopUp("Login efetuado com sucesso")
             this.props.history.push(`/home/${user.name}/${user.email}`)
         }).catch(error => {
+            if(error.response){
             var data = error.response.data
             if(data.toLowerCase().includes("email")){
             this.setState({errorEmailMessage: error.response.data})
@@ -52,6 +55,7 @@ class Login extends React.Component{
                 this.setState({inputPasswordErrorClass: "is-invalid"})
             }
             errorPopUp(error.response.data)
+        }
         })
     }
 
