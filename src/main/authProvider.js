@@ -1,5 +1,7 @@
 import React from 'react'
 import AuthService from '../app/service/authService'
+import JwtService from '../app/service/jwtService'
+import UserService from '../app/service/userService'
 import * as popUp from '../components/toastr'
 
 export const AuthContext = React.createContext()
@@ -8,6 +10,11 @@ const AuthProvider = AuthContext.Provider
 
 
 class AuthenticationProvider extends React.Component {
+
+    constructor(){
+        super();
+        this.jwtService = new JwtService();
+    }
 
     state = {
         userLoggedIn: AuthService.userLoggedIn(),
@@ -24,6 +31,19 @@ class AuthenticationProvider extends React.Component {
     endSession = () => {
         AuthService.logOut()
         this.setState({isAuth: false, userLoggedIn: null})
+    }
+
+    checkSessionExpirationTime = () => {
+        if(AuthService.token()){
+            console.log('tem token')
+            this.jwtService.checkSession()
+            .then(response => {
+                console.log("passou")
+            }).catch(error => {
+                this.endSession()
+                popUp.warningPopUp('Login Expirado')
+            })
+        }
     }
 
     render() {

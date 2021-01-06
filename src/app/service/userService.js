@@ -7,10 +7,6 @@ class UserService extends ApiService {
         super('/api/users')
     }
 
-    auth(credentials){
-        return this.post('/authenticate', credentials)
-    }
-
     signUp(userData){
         return this.post('/signUp', userData)
     }
@@ -21,6 +17,7 @@ class UserService extends ApiService {
     getAllUsers() {
         return this.get('/getUsers')
     }
+
 }
 
 export default UserService

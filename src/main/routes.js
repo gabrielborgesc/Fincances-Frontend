@@ -12,7 +12,7 @@ function AuthRoute( {component: Component, isAuth, checkSession, ...props} ) {
 
     return(
         <Route {...props} render={(componentProps) => {
-
+            checkSession()
             if(props.path === '/'){
                 if(isAuth){
                     return (

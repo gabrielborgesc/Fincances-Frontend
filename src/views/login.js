@@ -4,16 +4,16 @@ import FormGroup from '../components/form-group'
 import { FaSave } from 'react-icons/fa'
 import { FaSignInAlt } from 'react-icons/fa'
 import { withRouter } from 'react-router-dom'
-import UserService from '../app/service/userService'
 import {errorPopUp, successPopUp} from '../components/toastr'
 import { AuthContext } from '../main/authProvider'
 import HandleErrorService from '../app/service/handleErrorService'
+import JwtService from '../app/service/jwtService'
 
 class Login extends React.Component{
     
     constructor(){
         super();
-        this.userService = new UserService();
+        this.jwtService = new JwtService();
         this.handleErrorService = new HandleErrorService();
     }
 
@@ -35,7 +35,7 @@ class Login extends React.Component{
 
     login = () => {
         this.resetView()
-        this.userService.auth(
+        this.jwtService.auth(
         {
             email: this.state.email,
             passwd: this.state.password
