@@ -4,8 +4,8 @@ class SessionStorageService {
         const now = new Date()
         const item = {
             value: value,
-            // expiration: now.getTime() + 1*3600*1000 //1 hora em ms
-            expiration: now.getTime() + 5000 //1 hora em ms
+            expiration: now.getTime() + 1*3600*1000 //1 hora em ms
+            // expiration: now.getTime() + 5000 //1 hora em ms
         }
         sessionStorage.setItem(key, JSON.stringify(item))
     }

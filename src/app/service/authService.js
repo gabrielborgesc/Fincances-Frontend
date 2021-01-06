@@ -7,7 +7,10 @@ export default class AuthService {
 
     static isUserLoggedIn(){
         // const user = LocalStorageService.getItem(userLoggedIn)
-        const user = SessionStorageService.getItem(userLoggedIn)
+        const data = SessionStorageService.getItem(userLoggedIn)
+        if(!data)
+        return null
+        const user = data.user
         return user && user.id
     }
 

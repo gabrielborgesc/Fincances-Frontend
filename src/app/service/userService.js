@@ -8,7 +8,7 @@ class UserService extends ApiService {
     }
 
     auth(credentials){
-        return this.post('/auth', credentials)
+        return this.post('/authenticate', credentials)
     }
 
     signUp(userData){

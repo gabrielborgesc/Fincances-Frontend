@@ -17,7 +17,7 @@ class Home extends React.Component {
     }
 
     componentDidMount(){
-      const user = this.context.userLoggedIn
+      const user = this.context.userLoggedIn.user
       this.userService.getBalance(user.id)
         .then(response => {
           this.setState({balance: response.data})

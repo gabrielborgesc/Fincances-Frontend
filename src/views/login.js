@@ -40,10 +40,10 @@ class Login extends React.Component{
             email: this.state.email,
             passwd: this.state.password
         }).then(response => {
-            const user = response.data
-            this.context.beginSession(user)
+            const data = response.data
+            this.context.beginSession(data)
             successPopUp("Login efetuado com sucesso")
-            this.props.history.push(`/home/${user.name}/${user.email}`)
+            this.props.history.push(`/home/${data.user.name}/${data.user.email}`)
         }).catch(error => {
             if(error.response){
             var data = error.response.data
