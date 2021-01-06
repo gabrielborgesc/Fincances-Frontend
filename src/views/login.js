@@ -54,7 +54,7 @@ class Login extends React.Component{
                 this.setState({errorPasswordMessage: error.response.data})
                 this.setState({inputPasswordErrorClass: "is-invalid"})
             }
-            errorPopUp(error.response.data)
+            HandleErrorService.handleError(this.props.history.push, error)
         }
         })
     }

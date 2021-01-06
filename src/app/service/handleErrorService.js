@@ -1,13 +1,17 @@
-import { errorPopUp } from "../../components/toastr"
+import { warningPopUp, errorPopUp } from "../../components/toastr"
 
 class HandleErrorService {
 
-    handleError(push, error){
-        if(error.response){
-            errorPopUp(error.response.data)
-        }
-        else {
-            push('/signUp')
+    static handleError(push, error){
+        const response = error.response
+        if(response){
+            if(response.status === 401){
+            push('/login')
+            warningPopUp('Login expirado')
+             }
+            else {
+                errorPopUp(response.data)
+            }
         }
     }
 

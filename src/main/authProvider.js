@@ -14,23 +14,16 @@ class AuthenticationProvider extends React.Component {
         isAuth: AuthService.isUserLoggedIn()
     }
     
-    beginSession = (user) => {
-        AuthService.login(user)
+    beginSession = (data) => {
+        const user = data.user
+        const token = data.token
+        AuthService.login(user, token)
         this.setState({isAuth: true, userLoggedIn: user})
     }
 
     endSession = () => {
         AuthService.logOut()
         this.setState({isAuth: false, userLoggedIn: null})
-    }
-
-    checkSessionExpirationTime = () => {
-        if(!AuthService.isUserLoggedIn()){
-            if(this.state.isAuth || this.state.userLoggedIn){
-                this.setState({isAuth: false, userLoggedIn: null})
-                popUp.infoPopUp('Login expirado')
-            }
-        }
     }
 
     render() {

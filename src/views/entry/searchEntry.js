@@ -2,7 +2,7 @@ import React from 'react'
 import Card from '../../components/card'
 import FormGroup from '../../components/form-group'
 import { withRouter } from 'react-router-dom'
-import LocalStorageService from '../../app/service/localStorageService'
+// import LocalStorageService from '../../app/service/localStorageService'
 import SelectMenu from '../../components/selectMenu'
 // import EntryTable from './entryTable'
 import EntryService from '../../app/service/entryService'
@@ -19,6 +19,7 @@ import { Button } from 'primereact/button'
 import { InputNumber } from 'primereact/inputnumber'
 import CrudTable from './primereactCrudTable'
 import { AuthContext } from '../../main/authProvider'
+import HandleErrorService from '../../app/service/handleErrorService'
 
 class SearchEntry extends React.Component{
 
@@ -129,9 +130,7 @@ class SearchEntry extends React.Component{
             }
             this.setState({loading: false})
         }).catch(error => {
-            if(error.response){
-            popUp.errorPopUp(error.response.data)
-            }
+            HandleErrorService.handleError(this.props.history.push, error)
         })
         
     }

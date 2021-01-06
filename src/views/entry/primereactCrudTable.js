@@ -1,7 +1,7 @@
 import React from 'react'
 import { Toast } from 'primereact/toast'
 import { Button } from 'primereact/button'
-import { FileUpload } from 'primereact/fileupload'
+// import { FileUpload } from 'primereact/fileupload'
 import { InputText } from 'primereact/inputtext'
 import { InputNumber } from 'primereact/inputnumber'
 import { Toolbar } from 'primereact/toolbar'
@@ -114,6 +114,11 @@ class CrudTable extends React.Component {
         })
     }
 
+    confirmDelete = () => {
+        this.setState({displayConfirmation: false})
+        this.props.deleteMulipleEntries(this.state.selectedEntries)
+        this.setState({selectedEntries: null})
+    }
 
     render (){
 
@@ -174,7 +179,7 @@ class CrudTable extends React.Component {
                     <Button label="Cancelar" icon="pi pi-times" onClick={() => this.setState({displayConfirmation: false})}
                             className="p-button-text" />
                     <Button label="Confirmar" icon="pi pi-check"
-                            onClick={() => this.props.deleteMulipleEntries(this.state.selectedEntries)} autoFocus />
+                            onClick={this.confirmDelete} autoFocus />
                 </div>
             );
         }

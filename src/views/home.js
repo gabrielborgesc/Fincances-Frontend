@@ -17,7 +17,7 @@ class Home extends React.Component {
     }
 
     componentDidMount(){
-      const user = this.context.userLoggedIn.user
+      const user = this.context.userLoggedIn
       this.userService.getBalance(user.id)
         .then(response => {
           this.setState({balance: response.data})
@@ -38,7 +38,7 @@ class Home extends React.Component {
                         { this.state.name && this.state.email ?
                         (
                           // <h1 >Bem vindo, {this.state.name}, {this.state.email}!</h1>
-                          <h1 >Bem vindo, {this.context.userLoggedIn.name}, {this.context.userLoggedIn.email}!</h1>
+                          <h1 >Bem vindo, {this.state.name}, {this.context.userLoggedIn.email}!</h1>
                         ) : 
                         (
                           <h1 >Bem vindo!</h1>

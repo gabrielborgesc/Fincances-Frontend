@@ -15,7 +15,7 @@ class ApiService {
     }
 
     post(url, object){
-        const token = AuthService.userLoggedIn() ? AuthService.userLoggedIn().token : ''
+        const token = AuthService.token() ? AuthService.token() : ''
         return httpClient.post(this.api_url + url, object, {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -27,7 +27,7 @@ class ApiService {
     }
 
     put(url, object){
-        const token = AuthService.userLoggedIn() ? AuthService.userLoggedIn().token : ''
+        const token = AuthService.token() ? AuthService.token() : ''
         return httpClient.put(this.api_url + url, object, {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -38,7 +38,7 @@ class ApiService {
     }
 
     delete(url){
-        const token = AuthService.userLoggedIn() ? AuthService.userLoggedIn().token : ''
+        const token = AuthService.token() ? AuthService.token() : ''
         return httpClient.delete(this.api_url + url, {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -49,8 +49,7 @@ class ApiService {
     }
 
     get(url){
-        const token = AuthService.userLoggedIn() ? AuthService.userLoggedIn().token : ''
-        console.log(token)
+        const token = AuthService.token() ? AuthService.token() : ''
         return httpClient.get(this.api_url + url, {
             headers: {
                 'Authorization': `Bearer ${token}`,
