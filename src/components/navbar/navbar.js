@@ -1,6 +1,7 @@
 import React from 'react';
 import { AuthConsumer } from '../../main/authProvider';
 import NavItem from './navItem'
+import UserMenu from './userMenu';
 function Navbar(props) {
     
     return (
@@ -29,8 +30,9 @@ function Navbar(props) {
         </li>               */}
         </ul>
         <form className="form-inline my-2 my-lg-0">
-        <input className="form-control mr-sm-2" type="text" placeholder="Search" />
-        <button className="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        {/* <input className="form-control mr-sm-2" type="text" placeholder="Search" />
+        <button className="btn btn-secondary my-2 my-sm-0" type="submit">Search</button> */}
+        <UserMenu render = {props.isAuth} />
         </form>
     </div>
     </nav>       

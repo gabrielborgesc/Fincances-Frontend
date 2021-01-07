@@ -18,6 +18,10 @@ class UserService extends ApiService {
         return this.get('/getUsers')
     }
 
+    changePassword(userData){
+        return this.put('/changePassword', userData)
+    }
+
 }
 
 export default UserService

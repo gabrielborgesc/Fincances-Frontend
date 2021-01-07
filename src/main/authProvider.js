@@ -35,10 +35,8 @@ class AuthenticationProvider extends React.Component {
 
     checkSessionExpirationTime = () => {
         if(AuthService.token()){
-            console.log('tem token')
             this.jwtService.checkSession()
             .then(response => {
-                console.log("passou")
             }).catch(error => {
                 this.endSession()
                 popUp.warningPopUp('Login Expirado')

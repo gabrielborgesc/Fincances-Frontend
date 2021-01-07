@@ -3,6 +3,7 @@ import UserService from '../app/service/userService';
 import {HiUserGroup} from 'react-icons/hi'
 import {MdAttachMoney} from 'react-icons/md'
 import { AuthContext } from '../main/authProvider';
+import { withRouter } from 'react-router-dom'
 
 class Home extends React.Component {
 
@@ -66,4 +67,4 @@ class Home extends React.Component {
 
 Home.contextType = AuthContext
 
-export default Home
+export default withRouter(Home)

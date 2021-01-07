@@ -2,6 +2,7 @@ import React from 'react'
 import Login from '../views/login'
 import SingUp from '../views/signUp'
 import Home from '../views/home'
+import ChangePassword from '../views/changePassword'
 import SearchEntry from '../views/entry/searchEntry'
 
 import { Route, Switch, HashRouter, Redirect } from 'react-router-dom'
@@ -47,6 +48,7 @@ function Routes(props){
                 <Route path = "/signUp" component = {SingUp} />
                 <AuthRoute isAuth={props.isAuth} checkSession={props.checkSession} path = "/home/:name?/:email?" component = {Home} />
                 <AuthRoute isAuth={props.isAuth} checkSession={props.checkSession} path = "/searchEntry" component = {SearchEntry} />
+                <AuthRoute isAuth={props.isAuth} checkSession={props.checkSession} path = "/changePassword" component = {ChangePassword} />
                 <AuthRoute isAuth={props.isAuth} checkSession={props.checkSession} path = "/" />
             </Switch>
         </HashRouter>
