@@ -22,6 +22,18 @@ class UserService extends ApiService {
         return this.put('/changePassword', userData)
     }
 
+    getUserFromHash(hash){
+        let params = `?`
+        params = `${params}&hash=${hash}`
+        return this.get(`/getUserFromHash${params}`)
+    }
+
+    redefinePassword(hash, userData){
+        let params = `?`
+        params = `${params}&hash=${hash}`
+        return this.put(`/redefinePassword${params}`, userData)
+    }
+
 }
 
 export default UserService

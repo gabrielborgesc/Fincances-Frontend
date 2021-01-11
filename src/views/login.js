@@ -8,13 +8,13 @@ import {errorPopUp, successPopUp} from '../components/toastr'
 import { AuthContext } from '../main/authProvider'
 import HandleErrorService from '../app/service/handleErrorService'
 import JwtService from '../app/service/jwtService'
+import { Button } from 'primereact/button';
 
 class Login extends React.Component{
     
     constructor(){
         super();
         this.jwtService = new JwtService();
-        this.handleErrorService = new HandleErrorService();
     }
 
     state = {
@@ -101,6 +101,10 @@ class Login extends React.Component{
                                 <button type="submit" className="btn btn-success" onClick = {this.login}><FaSignInAlt />  Entrar</button>
                                 <button className="btn btn-danger right-button"
                                 onClick={this.signUp} ><FaSave />  Cadastrar</button>
+                                 <Button label="Esqueceu a senha?"
+                                        className="p-button-info p-button-text"
+                                        style = { {marginLeft: '120px'} } 
+                                        onClick = {() => {this.props.history.push('/recoverPassword')}} />
                             </fieldset>
                         </Card>
                     </div>

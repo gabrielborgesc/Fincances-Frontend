@@ -4,6 +4,7 @@ import SingUp from '../views/signUp'
 import Home from '../views/home'
 import ChangePassword from '../views/changePassword'
 import SearchEntry from '../views/entry/searchEntry'
+import RecoverPassword from '../views/recoverPassword/recoverPassword'
 
 import { Route, Switch, HashRouter, Redirect } from 'react-router-dom'
 import { AuthConsumer } from './authProvider'
@@ -46,6 +47,7 @@ function Routes(props){
             <Switch>
                 <Route path = "/login" component = {Login} />
                 <Route path = "/signUp" component = {SingUp} />
+                <Route path = "/recoverPassword/:hash?" component = {RecoverPassword} />
                 <AuthRoute isAuth={props.isAuth} checkSession={props.checkSession} path = "/home/:name?/:email?" component = {Home} />
                 <AuthRoute isAuth={props.isAuth} checkSession={props.checkSession} path = "/searchEntry" component = {SearchEntry} />
                 <AuthRoute isAuth={props.isAuth} checkSession={props.checkSession} path = "/changePassword" component = {ChangePassword} />
