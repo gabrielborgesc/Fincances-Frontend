@@ -67,7 +67,19 @@ class ChangePassword extends React.Component{
         return check
     }
 
+    resetView = () => {
+        this.setState( {errorPasswordMessage: null} )
+        this.setState( {inputPasswordErrorClass: null} )
+        this.setState( {errorNewPasswordMessage: null} )
+        this.setState( {inputNewPasswordErrorClass: null} )
+        this.setState( {errorConfirmNewPasswordMessage: null} )
+        this.setState( {inputConfirmNewPasswordErrorClass: null} )
+    }
+
     changePassword = () => {
+
+        this.resetView()
+
         if(this.checkData()){
 
             this.userService.changePassword({
@@ -78,8 +90,12 @@ class ChangePassword extends React.Component{
                 this.props.history.push('/login')
             }).catch(error => {
                 if(!HandleErrorService.handleError(this.props.history.push, error)){
-                    this.setState({errorPasswordMessage: error.response.data})
-                    this.setState({inputPasswordErrorClass: "is-invalid"}) 
+                    const data = error.response.data
+                    if(data.toLowerCase().includes("incorreta"))
+                    {   
+                        this.setState({errorPasswordMessage: error.response.data})
+                        this.setState({inputPasswordErrorClass: "is-invalid"}) 
+                    }
                 }
             })
         }
