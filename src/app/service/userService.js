@@ -22,14 +22,16 @@ class UserService extends ApiService {
         return this.put('/changePassword', userData)
     }
 
-    getUserFromHash(hash){
+    getUserFromNameAndHash(name, hash){
         let params = `?`
+        params = `${params}&name=${name}`
         params = `${params}&hash=${hash}`
         return this.get(`/getUserFromHash${params}`)
     }
 
-    redefinePassword(hash, userData){
+    redefinePassword(name, hash, userData){
         let params = `?`
+        params = `${params}&name=${name}`
         params = `${params}&hash=${hash}`
         return this.put(`/redefinePassword${params}`, userData)
     }

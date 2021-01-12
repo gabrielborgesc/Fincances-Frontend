@@ -47,7 +47,7 @@ function Routes(props){
             <Switch>
                 <Route path = "/login" component = {Login} />
                 <Route path = "/signUp" component = {SingUp} />
-                <Route path = "/recoverPassword/:hash?" component = {RecoverPassword} />
+                <Route path = "/recoverPassword/:name?/:hash?" component = {RecoverPassword} />
                 <AuthRoute isAuth={props.isAuth} checkSession={props.checkSession} path = "/home/:name?/:email?" component = {Home} />
                 <AuthRoute isAuth={props.isAuth} checkSession={props.checkSession} path = "/searchEntry" component = {SearchEntry} />
                 <AuthRoute isAuth={props.isAuth} checkSession={props.checkSession} path = "/changePassword" component = {ChangePassword} />

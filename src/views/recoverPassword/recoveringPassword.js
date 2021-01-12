@@ -28,7 +28,7 @@ class RecoveringPassWord extends React.Component {
     }
 
     componentDidMount() {
-        this.userService.getUserFromHash(this.props.hash)
+        this.userService.getUserFromNameAndHash(this.props.name, this.props.hash)
         .then(response => {
             this.setState( {email: response.data.email} )
         }).catch(error => {
@@ -83,7 +83,7 @@ class RecoveringPassWord extends React.Component {
         this.resetView()
 
         if(this.checkData())
-        {    this.userService.redefinePassword(this.props.hash, {
+        {    this.userService.redefinePassword(this.props.name, this.props.hash, {
                 passwd: this.state.newPassword
             }).then(response => {
                 popUp.successPopUp("Senha alterada com sucesso")
