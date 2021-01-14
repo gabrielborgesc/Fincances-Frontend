@@ -4,12 +4,17 @@ import {HiUserGroup} from 'react-icons/hi'
 import {MdAttachMoney} from 'react-icons/md'
 import { AuthContext } from '../main/authProvider';
 import { withRouter } from 'react-router-dom'
+import { FileUpload } from 'primereact/fileupload';
+import * as popUp from '../components/toastr';
+import FileService from '../app/service/fileService';
+
 
 class Home extends React.Component {
 
     constructor(){
       super();
       this.userService = new UserService();
+      this.fileService = new FileService();
     }
     state = {
       balance: 0,
@@ -18,7 +23,6 @@ class Home extends React.Component {
     }
 
     componentDidMount(){
-      const user = this.context.userLoggedIn
       this.userService.getBalance()
         .then(response => {
           this.setState({balance: response.data})
@@ -29,6 +33,20 @@ class Home extends React.Component {
         this.setState({name: params.name})
         this.setState({email: params.email})
     }
+
+    myUploader = (event) => {
+      console.log(event.files[0])
+      var bodyFormData = new FormData();
+      bodyFormData.append('file', event.files[0]);
+      this.fileService.upload(bodyFormData)
+      .then(response => {
+        popUp.successPopUp("upload completo")
+        console.log('response', response)
+      }).catch(error => {
+        console.log('error', error)
+      })
+  }
+
 
     render(){
         return (
@@ -56,6 +74,13 @@ class Home extends React.Component {
                         <a className="btn btn-danger right-button"
                         href="#/searchEntry"
                         role="button"><MdAttachMoney />  Cadastrar Lançamento</a>
+                        <FileUpload mode="basic" name="demo[]"
+                                    accept="text/xml" 
+                                    maxFileSize={1000000}
+                                    customUpload
+                                    uploadHandler={this.myUploader}
+                                    auto
+                                    chooseLabel="Upload" />
                       </p>
                       </div>
                     </div>      
