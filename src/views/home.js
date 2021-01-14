@@ -4,21 +4,26 @@ import {HiUserGroup} from 'react-icons/hi'
 import {MdAttachMoney} from 'react-icons/md'
 import { AuthContext } from '../main/authProvider';
 import { withRouter } from 'react-router-dom'
+import FileService from '../app/service/fileService';
+import FileUploadCard from '../components/fileUploadCard';
+
 
 class Home extends React.Component {
 
     constructor(){
       super();
       this.userService = new UserService();
+      this.fileService = new FileService();
+      this.hiddenFileInput = React.createRef();
     }
     state = {
       balance: 0,
       name: '',
-      email: ''
+      email: '',
+      file: null
     }
 
     componentDidMount(){
-      const user = this.context.userLoggedIn
       this.userService.getBalance()
         .then(response => {
           this.setState({balance: response.data})
@@ -29,7 +34,6 @@ class Home extends React.Component {
         this.setState({name: params.name})
         this.setState({email: params.email})
     }
-
     render(){
         return (
           <div className = "row">
@@ -56,6 +60,9 @@ class Home extends React.Component {
                         <a className="btn btn-danger right-button"
                         href="#/searchEntry"
                         role="button"><MdAttachMoney />  Cadastrar Lançamento</a>
+
+                      <FileUploadCard />
+
                       </p>
                       </div>
                     </div>      
