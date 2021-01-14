@@ -12,6 +12,9 @@ class FileService extends ApiFileService {
         return this.post(`/uploadFile`, file)
     }
 
+    mutipleUpload(files){
+        return this.post(`/uploadMultipleFiles`, files)
+    }
 }
 
 export default FileService

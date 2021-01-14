@@ -42,10 +42,12 @@ class FileUploadCard extends React.Component{
         this.setState({selectedFiles: null})
     }
 
-    upload = (file) => {
+    upload = () => {
         var bodyFormData = new FormData();
-        bodyFormData.append('file', file);
-        this.fileService.upload(bodyFormData)
+        for (const file of this.state.files) {
+            bodyFormData.append('files', file);
+          }
+        this.fileService.mutipleUpload(bodyFormData)
         .then(response => {
           popUp.successPopUp("Upload completado")
           console.log('response', response)
